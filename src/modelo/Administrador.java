@@ -19,9 +19,8 @@ public class Administrador
     {
     }
 
-    public Administrador(int id_administrador, String nombre, String correo, String contraseña)
+    public Administrador(String nombre, String correo, String contraseña)
     {
-        this.id_administrador = id_administrador;
         this.nombre = nombre;
         this.correo = correo;
         this.contraseña = contraseña;
