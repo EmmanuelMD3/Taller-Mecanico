@@ -4,7 +4,7 @@
  */
 package dao;
 
-import BD.Conexion;
+import conexion.Conexion;
 import modelo.Administrador;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

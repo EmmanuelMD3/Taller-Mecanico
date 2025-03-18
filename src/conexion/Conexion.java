@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package BD;
+package conexion;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class Conexion
 {
 
-    private static final String url = "jdbc:mysql://localhost:3306/Taller"; // Nombre de tu base de datos
+    private static final String url = "jdbc:mysql://localhost:3306/Taller"; 
     private static final String usuario = "root";
     private static final String contraseña = "Emmanuel360";
 
@@ -32,10 +32,5 @@ public class Conexion
             e.printStackTrace();
         }
         return connection;  
-    }
-
-    public static void main(String[] args)
-    {
-        conectar();
     }
 }
