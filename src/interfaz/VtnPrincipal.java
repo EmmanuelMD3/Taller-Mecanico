@@ -4,6 +4,8 @@
  */
 package interfaz;
 
+import modelo.Vehiculo;
+
 /**
  *
  * @author chemo
@@ -37,21 +39,24 @@ public class VtnPrincipal extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Taller Mecanico Autofix");
-        setPreferredSize(new java.awt.Dimension(1000, 500));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        panelControl.setBackground(new java.awt.Color(255, 255, 255));
+        panelControl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panelControl.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout panelControlLayout = new javax.swing.GroupLayout(panelControl);
         panelControl.setLayout(panelControlLayout);
         panelControlLayout.setHorizontalGroup(
             panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1150, Short.MAX_VALUE)
+            .addGap(0, 1146, Short.MAX_VALUE)
         );
         panelControlLayout.setVerticalGroup(
             panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
+            .addGap(0, 516, Short.MAX_VALUE)
         );
 
-        getContentPane().add(panelControl, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1150, 560));
+        getContentPane().add(panelControl, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1150, 520));
 
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/hombre.png"))); // NOI18N
         jMenu1.setText("Dueños");
@@ -68,10 +73,24 @@ public class VtnPrincipal extends javax.swing.JFrame
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carros.png"))); // NOI18N
         jMenu2.setText("Vehiculos");
         jMenu2.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jMenu2.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jMenu2MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu2);
 
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/caja-de-herramientas.png"))); // NOI18N
         jMenu3.setText("Mantenimientos");
+        jMenu3.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jMenu3MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -86,6 +105,20 @@ public class VtnPrincipal extends javax.swing.JFrame
         VtnDueño dueño = new VtnDueño();
         panelControl.add(dueño).setVisible(true);
     }//GEN-LAST:event_jMenu1MouseClicked
+
+    private void jMenu2MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jMenu2MouseClicked
+    {//GEN-HEADEREND:event_jMenu2MouseClicked
+        panelControl.removeAll();
+        VtnVehiculos vehiculo = new VtnVehiculos();
+        panelControl.add(vehiculo).setVisible(true);
+    }//GEN-LAST:event_jMenu2MouseClicked
+
+    private void jMenu3MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jMenu3MouseClicked
+    {//GEN-HEADEREND:event_jMenu3MouseClicked
+        panelControl.removeAll();
+        VtnMantenimientos mantenimientos = new VtnMantenimientos();
+        panelControl.add(mantenimientos).setVisible(true);
+    }//GEN-LAST:event_jMenu3MouseClicked
 
     /**
      * @param args the command line arguments
