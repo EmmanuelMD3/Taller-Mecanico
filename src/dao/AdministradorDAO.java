@@ -35,20 +35,4 @@ public class AdministradorDAO
             return false;
         }
     }
-
-    public static void main(String[] args)
-    {
-        Administrador admin = new Administrador("Saul", "Saul@gnail.com", "4321");
-        boolean registro = false;
-        registro = agregarAdministrador(admin);
-        if (registro == false)
-        {
-            System.out.println("No se agrego");
-        }
-        else
-        {
-            System.out.println("Se agrego correctamente");
-        }
-       
-    }
 }

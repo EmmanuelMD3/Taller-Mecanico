@@ -7,6 +7,7 @@ package cjb.ci;
 
 
 
+import java.awt.Panel;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -75,6 +76,8 @@ public class Mensaje
             JOptionPane.showMessageDialog(jf, s,"Mensaje de éxito", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+    
+
      /**
      * Método para enviar mensajes de éxito, si es a consola es mensaje simple 
      * si es a pantalla aparece con el icono de información (i)

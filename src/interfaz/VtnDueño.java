@@ -5,7 +5,13 @@
 package interfaz;
 
 import cjb.ci.CtrlInterfaz;
+import cjb.ci.Mensaje;
+import dao.PropietarioDAO;
+import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
+import modelo.Propietario;
 
 /**
  *
@@ -34,15 +40,15 @@ public class VtnDueño extends javax.swing.JInternalFrame
     {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaPropietario = new javax.swing.JTable();
         buscar = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        nombre = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        telefono = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
@@ -51,13 +57,38 @@ public class VtnDueño extends javax.swing.JInternalFrame
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setPreferredSize(new java.awt.Dimension(1150, 520));
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener()
+        {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt)
+            {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt)
+            {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt)
+            {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt)
+            {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt)
+            {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt)
+            {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt)
+            {
+                formInternalFrameOpened(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-        jTable1.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaPropietario.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        tablaPropietario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][]
             {
 
@@ -78,7 +109,7 @@ public class VtnDueño extends javax.swing.JInternalFrame
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaPropietario);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 750, 390));
 
@@ -114,23 +145,26 @@ public class VtnDueño extends javax.swing.JInternalFrame
         jLabel4.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel4.setText("Nombre: ");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 90, -1, -1));
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 120, 360, -1));
+
+        nombre.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        getContentPane().add(nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 120, 360, -1));
 
         jLabel5.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel5.setText("Telefono: ");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 170, -1, -1));
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener()
+        telefono.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        telefono.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jTextField2ActionPerformed(evt);
+                telefonoActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 200, 360, -1));
+        getContentPane().add(telefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 200, 360, -1));
 
         jButton1.setBackground(new java.awt.Color(153, 153, 255));
-        jButton1.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("MODIFICAR");
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 460, 110, 30));
@@ -139,7 +173,7 @@ public class VtnDueño extends javax.swing.JInternalFrame
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, -1, 40));
 
         jButton2.setBackground(new java.awt.Color(102, 255, 102));
-        jButton2.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("ALTA");
         jButton2.addActionListener(new java.awt.event.ActionListener()
@@ -152,7 +186,7 @@ public class VtnDueño extends javax.swing.JInternalFrame
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 460, 110, 30));
 
         jButton3.setBackground(new java.awt.Color(255, 51, 51));
-        jButton3.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jButton3.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("CANCELAR");
         jButton3.addActionListener(new java.awt.event.ActionListener()
@@ -169,7 +203,7 @@ public class VtnDueño extends javax.swing.JInternalFrame
 
     private void buscarMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_buscarMouseClicked
     {//GEN-HEADEREND:event_buscarMouseClicked
-            
+
     }//GEN-LAST:event_buscarMouseClicked
 
     private void buscarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buscarActionPerformed
@@ -177,14 +211,41 @@ public class VtnDueño extends javax.swing.JInternalFrame
         // TODO add your handling code here:
     }//GEN-LAST:event_buscarActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jTextField2ActionPerformed
-    {//GEN-HEADEREND:event_jTextField2ActionPerformed
+    private void telefonoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_telefonoActionPerformed
+    {//GEN-HEADEREND:event_telefonoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_telefonoActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton2ActionPerformed
     {//GEN-HEADEREND:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        int id = 0;
+        String nom = nombre.getText().trim(); 
+        String tel = telefono.getText().trim();
+
+        if (nom.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!tel.matches("\\d{10}"))
+        {
+            JOptionPane.showMessageDialog(this, "Número de teléfono inválido. Debe contener exactamente 10 dígitos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Propietario newPropietario = new Propietario(id, nom, tel);
+        boolean registroExitoso = PropietarioDAO.agregarPropietario(newPropietario);
+
+        if (registroExitoso)
+        {
+            JOptionPane.showMessageDialog(this, "Operación exitosa", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            CtrlInterfaz.limpia(nombre, telefono);
+            llenarTablaPropietarios();
+        } else
+        {
+            JOptionPane.showMessageDialog(this, "Ocurrió un error al registrar el propietario.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton3ActionPerformed
@@ -192,6 +253,29 @@ public class VtnDueño extends javax.swing.JInternalFrame
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt)//GEN-FIRST:event_formInternalFrameOpened
+    {//GEN-HEADEREND:event_formInternalFrameOpened
+        llenarTablaPropietarios();
+    }//GEN-LAST:event_formInternalFrameOpened
+
+    private void llenarTablaPropietarios()
+    {
+        DefaultTableModel modelo = (DefaultTableModel) tablaPropietario.getModel();
+
+        modelo.setRowCount(0);
+
+        List<modelo.Propietario> propietarios = PropietarioDAO.listarPropietario();
+
+        for (modelo.Propietario propietario : propietarios)
+        {
+            modelo.addRow(new Object[]
+            {
+                propietario.getId_propietario(),
+                propietario.getNombre(),
+                propietario.getTelefono()
+            });
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField buscar;
@@ -205,8 +289,8 @@ public class VtnDueño extends javax.swing.JInternalFrame
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField nombre;
+    private javax.swing.JTable tablaPropietario;
+    private javax.swing.JTextField telefono;
     // End of variables declaration//GEN-END:variables
 }
