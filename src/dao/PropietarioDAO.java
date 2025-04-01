@@ -20,6 +20,7 @@ import modelo.Propietario;
  */
 public class PropietarioDAO
 {
+
     public static boolean agregarPropietario(Propietario propietario)
     {
         String sql = "INSERT INTO Propietario (id_propietario, nombre, telefono) VALUES (?, ?, ?)";
@@ -28,8 +29,8 @@ public class PropietarioDAO
             pstmt.setInt(1, propietario.getId_propietario());
             pstmt.setString(2, propietario.getNombre());
             pstmt.setString(3, propietario.getTelefono());
-            
-            pstmt.executeUpdate();  
+
+            pstmt.executeUpdate();
             return true;
         } catch (SQLException e)
         {
@@ -38,7 +39,7 @@ public class PropietarioDAO
             return false;
         }
     }
-    
+
     public static List<Propietario> listarPropietario()
     {
         List<Propietario> propietarios = new ArrayList<>();
@@ -52,7 +53,7 @@ public class PropietarioDAO
                 Propietario propietario = new Propietario(
                         rs.getInt("id_propietario"),
                         rs.getString("nombre"),
-                        rs.getString("telefono")         
+                        rs.getString("telefono")
                 );
                 propietarios.add(propietario);
             }
@@ -63,7 +64,7 @@ public class PropietarioDAO
         }
         return propietarios;
     }
-    
+
     public void eliminarPropietario(long codigoPropietario)
     {
         String sql = "DELETE FROM Propietario WHERE id_propietario = ?";
@@ -85,4 +86,24 @@ public class PropietarioDAO
             System.err.println("Error al eliminar el propietario: " + e.getMessage());
         }
     }
+
+    public boolean modificarPropietario(Propietario propietario)
+    {
+        String sql = "UPDATE Propietario SET nombre = ?, telefono = ? WHERE id_propietario = ?";
+
+        try (Connection conn = Conexion.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql))
+        {
+            pstmt.setString(1, propietario.getNombre());
+            pstmt.setString(2, propietario.getTelefono());
+            pstmt.setInt(3, propietario.getId_propietario()); // Aquí asignas el ID correctamente
+
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e)
+        {
+            System.err.println("Error al modificar el propietario: " + e.getMessage());
+            return false;
+        }
+    }
+
 }

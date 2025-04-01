@@ -8,6 +8,7 @@ import cjb.ci.CtrlInterfaz;
 import cjb.ci.Mensaje;
 import dao.PropietarioDAO;
 import java.util.List;
+import javax.swing.DefaultButtonModel;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
@@ -109,6 +110,13 @@ public class VtnDueño extends javax.swing.JInternalFrame
                 return canEdit [columnIndex];
             }
         });
+        tablaPropietario.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                tablaPropietarioMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaPropietario);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 750, 390));
@@ -167,6 +175,13 @@ public class VtnDueño extends javax.swing.JInternalFrame
         jButton1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("MODIFICAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 460, 110, 30));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/bote-de-basura.png"))); // NOI18N
@@ -306,6 +321,67 @@ public class VtnDueño extends javax.swing.JInternalFrame
             JOptionPane.showMessageDialog(this, "Propietario eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void tablaPropietarioMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_tablaPropietarioMouseClicked
+    {//GEN-HEADEREND:event_tablaPropietarioMouseClicked
+        int filaSeleccionada = tablaPropietario.getSelectedRow();
+
+        if (filaSeleccionada != -1)
+        {
+            DefaultTableModel modeloTabla = (DefaultTableModel) tablaPropietario.getModel();
+            String nom = (String) modeloTabla.getValueAt(filaSeleccionada, 1);
+            String tel = (String) modeloTabla.getValueAt(filaSeleccionada, 2);
+
+            nombre.setText(nom);
+            telefono.setText(tel);
+        }
+    }//GEN-LAST:event_tablaPropietarioMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
+    {//GEN-HEADEREND:event_jButton1ActionPerformed
+        int filaSeleccionada = tablaPropietario.getSelectedRow();
+
+        if (filaSeleccionada == -1)
+        {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un propietario para actualizar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        DefaultTableModel modeloTabla = (DefaultTableModel) tablaPropietario.getModel();
+
+        String nuevoNombre = nombre.getText();
+        String nuevoTelefono = telefono.getText();
+
+        PropietarioDAO propietarioDAO = new PropietarioDAO();
+        Propietario propietarioActualizado = new Propietario();
+
+        Object valorCelda = modeloTabla.getValueAt(filaSeleccionada, 0);
+        int codigo;
+
+        try
+        {
+            codigo = Integer.parseInt(valorCelda.toString());
+        } catch (NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(this, "Error al obtener el ID del propietario.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        propietarioActualizado.setId_propietario(codigo);
+        propietarioActualizado.setNombre(nuevoNombre);
+        propietarioActualizado.setTelefono(nuevoTelefono);
+
+        boolean exito = propietarioDAO.modificarPropietario(propietarioActualizado);
+
+        if (exito)
+        {
+            JOptionPane.showMessageDialog(this, "Propietario actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            llenarTablaPropietarios();
+        } else
+        {
+            JOptionPane.showMessageDialog(this, "Error al actualizar el propietario.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void llenarTablaPropietarios()
     {
