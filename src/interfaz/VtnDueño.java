@@ -170,6 +170,14 @@ public class VtnDueño extends javax.swing.JInternalFrame
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 460, 110, 30));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/bote-de-basura.png"))); // NOI18N
+        jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLabel6MouseClicked(evt);
+            }
+        });
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, -1, 40));
 
         jButton2.setBackground(new java.awt.Color(102, 255, 102));
@@ -219,7 +227,7 @@ public class VtnDueño extends javax.swing.JInternalFrame
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton2ActionPerformed
     {//GEN-HEADEREND:event_jButton2ActionPerformed
         int id = 0;
-        String nom = nombre.getText().trim(); 
+        String nom = nombre.getText().trim();
         String tel = telefono.getText().trim();
 
         if (nom.isEmpty())
@@ -257,6 +265,47 @@ public class VtnDueño extends javax.swing.JInternalFrame
     {//GEN-HEADEREND:event_formInternalFrameOpened
         llenarTablaPropietarios();
     }//GEN-LAST:event_formInternalFrameOpened
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabel6MouseClicked
+    {//GEN-HEADEREND:event_jLabel6MouseClicked
+        int filaSeleccionada = tablaPropietario.getSelectedRow();
+
+        if (filaSeleccionada < 0 || filaSeleccionada >= tablaPropietario.getRowCount())
+        {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un propietario válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de que desea eliminar el propietario seleccionado?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION)
+        {
+            DefaultTableModel modeloTabla = (DefaultTableModel) tablaPropietario.getModel();
+            Object valorCelda = tablaPropietario.getValueAt(filaSeleccionada, 0);
+
+            long codigoPropietario;
+            try
+            {
+                codigoPropietario = Long.parseLong(valorCelda.toString());
+            } catch (NumberFormatException e)
+            {
+                JOptionPane.showMessageDialog(this, "Error al obtener el código del propietario.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            PropietarioDAO propietarioDAO = new PropietarioDAO();
+            propietarioDAO.eliminarPropietario(codigoPropietario);
+
+            llenarTablaPropietarios();
+            JOptionPane.showMessageDialog(this, "Propietario eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_jLabel6MouseClicked
 
     private void llenarTablaPropietarios()
     {

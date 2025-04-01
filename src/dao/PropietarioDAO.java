@@ -63,4 +63,26 @@ public class PropietarioDAO
         }
         return propietarios;
     }
+    
+    public void eliminarPropietario(long codigoPropietario)
+    {
+        String sql = "DELETE FROM Propietario WHERE id_propietario = ?";
+
+        try (Connection conn = Conexion.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql))
+        {
+            pstmt.setLong(1, codigoPropietario);
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0)
+            {
+                System.out.println("Propietario eliminado con éxito.");
+            } else
+            {
+                System.out.println("No se encontró el propietario con el código especificado.");
+            }
+        } catch (SQLException e)
+        {
+            System.err.println("Error al eliminar el propietario: " + e.getMessage());
+        }
+    }
 }

@@ -26,6 +26,7 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         fecha = new com.toedter.calendar.JDateChooser();
 
         fecha.setBounds(0, 0, 150, 30);
+        
 
         calendario.setLayout(null);
 
