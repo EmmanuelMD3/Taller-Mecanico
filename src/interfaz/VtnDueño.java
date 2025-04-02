@@ -5,10 +5,8 @@
 package interfaz;
 
 import cjb.ci.CtrlInterfaz;
-import cjb.ci.Mensaje;
 import dao.PropietarioDAO;
 import java.util.List;
-import javax.swing.DefaultButtonModel;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
@@ -27,6 +25,27 @@ public class VtnDueño extends javax.swing.JInternalFrame
     public VtnDueño()
     {
         initComponents();
+
+        buscar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener()
+        {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e)
+            {
+                filtrarPropietarios();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e)
+            {
+                filtrarPropietarios();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e)
+            {
+                filtrarPropietarios();
+            }
+        });
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
     }
 
@@ -399,6 +418,32 @@ public class VtnDueño extends javax.swing.JInternalFrame
                 propietario.getNombre(),
                 propietario.getTelefono()
             });
+        }
+    }
+
+    public void filtrarPropietarios()
+    {
+        String textoBusqueda = buscar.getText().trim().toLowerCase();
+        DefaultTableModel modeloTabla = (DefaultTableModel) tablaPropietario.getModel();
+
+        modeloTabla.setRowCount(0);
+
+        PropietarioDAO propietarioDAO = new PropietarioDAO();
+
+        List<Propietario> propietarios = propietarioDAO.obtenerTodosLosPropitarios();
+
+        for (Propietario propietario : propietarios)
+        {
+            if (propietario.getNombre().toLowerCase().contains(textoBusqueda))
+            {
+                Object[] fila =
+                {
+                    propietario.getId_propietario(),
+                    propietario.getNombre(),
+                    propietario.getTelefono()
+                };
+                modeloTabla.addRow(fila);
+            }
         }
     }
 

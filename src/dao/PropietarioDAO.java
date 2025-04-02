@@ -105,5 +105,28 @@ public class PropietarioDAO
             return false;
         }
     }
+    
+    public List<Propietario> obtenerTodosLosPropitarios()
+    {
+        List<Propietario> propietarios = new ArrayList<>();
+        String sql = "SELECT id_propietario, nombre, telefono FROM Propietario";
+
+        try (Connection conn = Conexion.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery())
+        {
+            while (rs.next())
+            {
+                Propietario propietario = new Propietario();
+                
+                propietario.setId_propietario(rs.getInt("id_propietario"));
+                propietario.setNombre(rs.getString("nombre"));
+                propietario.setTelefono(rs.getString("telefono"));
+                propietarios.add(propietario);
+            }
+        } catch (SQLException e)
+        {
+            System.err.println("Error al obtener los propietarios: " + e.getMessage());
+        }
+        return propietarios;
+    }
 
 }
