@@ -10,25 +10,31 @@ package modelo;
  */
 public class Vehiculo
 {
+
     private int id_vehiculo;
     private String placa;
+    private String marca;
     private String modelo;
     private int año;
     private int id_propietario;
+    private String rutaImagen;
 
     public Vehiculo()
     {
     }
 
-    public Vehiculo(int id_vehiculo, String placa, String modelo, int año, int id_propietario)
+    public Vehiculo(int id_vehiculo, String placa, String marca,String modelo, int año, int id_propietario, String rutaImagen)
     {
         this.id_vehiculo = id_vehiculo;
         this.placa = placa;
+        this.marca = marca;
         this.modelo = modelo;
         this.año = año;
         this.id_propietario = id_propietario;
+        this.rutaImagen = rutaImagen;
     }
-
+    
+    
     /**
      * @return the id_vehiculo
      */
@@ -108,6 +114,31 @@ public class Vehiculo
     {
         this.id_propietario = id_propietario;
     }
-    
- 
+
+    public String getRutaImagen()
+    {
+        return rutaImagen;
+    }
+
+    public void setRutaImagen(String rutaImagen)
+    {
+        this.rutaImagen = rutaImagen;
+    }
+
+    /**
+     * @return the marca
+     */
+    public String getMarca()
+    {
+        return marca;
+    }
+
+    /**
+     * @param marca the marca to set
+     */
+    public void setMarca(String marca)
+    {
+        this.marca = marca;
+    }
+
 }

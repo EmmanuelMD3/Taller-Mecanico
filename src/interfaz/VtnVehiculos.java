@@ -4,12 +4,26 @@
  */
 package interfaz;
 
-import dao.VehiculosDAO;
+import dao.PropietarioDAO;
+import dao.VehiculoDAO;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
 import modelo.Propietario;
+import modelo.Vehiculo;
 
 /**
  *
@@ -17,6 +31,7 @@ import modelo.Propietario;
  */
 public class VtnVehiculos extends javax.swing.JInternalFrame
 {
+
     /**
      * Creates new form VtnDueño
      */
@@ -36,26 +51,32 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
     private void initComponents()
     {
 
+        txtRutaImagen = new javax.swing.JTextField();
+        jFileChooser1 = new javax.swing.JFileChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaVehiculos = new javax.swing.JTable();
         buscar = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        placaJT = new javax.swing.JTextField();
+        lblImagenVehiculo = new javax.swing.JLabel();
+        imagenPanel = new javax.swing.JPanel();
+        marcaJT = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        modeloJT = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        propietarioCB = new javax.swing.JComboBox<>();
+        anioCB = new javax.swing.JComboBox<>();
+        jLabel10 = new javax.swing.JLabel();
+
+        txtRutaImagen.setText("jTextField1");
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -90,8 +111,8 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-        jTable1.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaVehiculos.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        tablaVehiculos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][]
             {
 
@@ -112,7 +133,7 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaVehiculos);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 750, 390));
 
@@ -143,28 +164,40 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
 
         jLabel3.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel3.setText("INFORMACION");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 50, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 0, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel4.setText("Placa:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 100, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 30, -1, -1));
 
-        jTextField1.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 130, 360, -1));
+        placaJT.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        getContentPane().add(placaJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 60, 150, -1));
 
-        jLabel5.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        jLabel5.setText("Propietario:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 340, -1, -1));
+        lblImagenVehiculo.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        lblImagenVehiculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carpeta.png"))); // NOI18N
+        lblImagenVehiculo.setText("Imagen:");
+        lblImagenVehiculo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblImagenVehiculo.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                lblImagenVehiculoMouseClicked(evt);
+            }
+        });
+        getContentPane().add(lblImagenVehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 210, -1, -1));
 
-        jTextField2.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTextField2.addActionListener(new java.awt.event.ActionListener()
+        imagenPanel.setEnabled(false);
+        getContentPane().add(imagenPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 250, 360, 190));
+
+        marcaJT.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        marcaJT.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jTextField2ActionPerformed(evt);
+                marcaJTActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 190, 360, -1));
+        getContentPane().add(marcaJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 60, 180, -1));
 
         jButton1.setBackground(new java.awt.Color(153, 153, 255));
         jButton1.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -203,33 +236,37 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel7.setText("Marca:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 160, -1, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 30, -1, -1));
 
-        jTextField3.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTextField3.setToolTipText("");
-        jTextField3.addActionListener(new java.awt.event.ActionListener()
+        modeloJT.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        modeloJT.setToolTipText("");
+        modeloJT.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jTextField3ActionPerformed(evt);
+                modeloJTActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 250, 360, -1));
+        getContentPane().add(modeloJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 120, 360, -1));
 
         jLabel8.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel8.setText("Modelo:");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 220, -1, -1));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 90, -1, -1));
 
         jLabel9.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel9.setText("Año:");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 280, -1, -1));
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 150, -1, -1));
 
-        jComboBox1.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 370, 360, -1));
+        propietarioCB.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        getContentPane().add(propietarioCB, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 180, 250, -1));
 
-        jComboBox2.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025" }));
-        getContentPane().add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 310, 360, -1));
+        anioCB.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        anioCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025" }));
+        getContentPane().add(anioCB, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 180, 80, -1));
+
+        jLabel10.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jLabel10.setText("Propietario:");
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 150, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -244,14 +281,73 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         // TODO add your handling code here:
     }//GEN-LAST:event_buscarActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jTextField2ActionPerformed
-    {//GEN-HEADEREND:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    private void marcaJTActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_marcaJTActionPerformed
+    {//GEN-HEADEREND:event_marcaJTActionPerformed
+
+    }//GEN-LAST:event_marcaJTActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton2ActionPerformed
     {//GEN-HEADEREND:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        String placa = placaJT.getText();
+        String modelo = modeloJT.getText();
+        String marca = marcaJT.getText();
+
+        if (placa.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "La placa no puede estar vacía.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (modelo.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "El modelo no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!placa.matches("^[A-Z]{3}-?\\d{3,4}|[A-Z]{2}-?\\d{2}-?[A-Z]{2}|[A-Z]{2}-?\\d{4}|\\d{3}-?[A-Z]{3}|[A-Z]\\d{6}$"))
+        {
+            JOptionPane.showMessageDialog(this, "Placa inválida. Los formatos aceptados son:\n"
+                    + "- AAA-999 (antiguo)\n"
+                    + "- AA-99-AA (nuevo)\n"
+                    + "- AA-9999 (nuevo)\n"
+                    + "- 999-AAA (nuevo)\n"
+                    + "- A999999 (nuevo)", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int anio = Integer.parseInt(anioCB.getSelectedItem().toString());
+
+        String nombreSeleccionado = (String) propietarioCB.getSelectedItem();
+
+        PropietarioDAO propietarioDAO = new PropietarioDAO();
+        int idPropietario = propietarioDAO.obtenerIdPorNombre(nombreSeleccionado);
+
+        if (idPropietario == -1)
+        {
+            JOptionPane.showMessageDialog(this, "No se encontró el propietario.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String rutaImagen = txtRutaImagen.getText();
+        if (rutaImagen.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una imagen.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Vehiculo nuevoVehiculo = new Vehiculo(0, placa, marca, modelo, anio, idPropietario, rutaImagen);
+
+        VehiculoDAO vehiculoDAO = new VehiculoDAO();
+        boolean exito = vehiculoDAO.insertarVehiculo(nuevoVehiculo);
+
+        if (exito)
+        {
+            JOptionPane.showMessageDialog(this, "Vehículo agregado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            llenarTablaVehiculos();
+        } else
+        {
+            JOptionPane.showMessageDialog(this, "Error al agregar el vehículo.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton3ActionPerformed
@@ -259,23 +355,90 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jTextField3ActionPerformed
-    {//GEN-HEADEREND:event_jTextField3ActionPerformed
+    private void modeloJTActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_modeloJTActionPerformed
+    {//GEN-HEADEREND:event_modeloJTActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_modeloJTActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt)//GEN-FIRST:event_formInternalFrameOpened
     {//GEN-HEADEREND:event_formInternalFrameOpened
-        llenarComboPropietarios(jComboBox1);
+        llenarComboPropietarios(propietarioCB);
+        llenarTablaVehiculos();
     }//GEN-LAST:event_formInternalFrameOpened
+
+    private void lblImagenVehiculoMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_lblImagenVehiculoMouseClicked
+    {//GEN-HEADEREND:event_lblImagenVehiculoMouseClicked
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Seleccionar imagen del vehículo");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Imágenes", "jpg", "jpeg", "png", "gif"));
+
+        int resultado = fileChooser.showOpenDialog(this);
+
+        if (resultado == JFileChooser.APPROVE_OPTION)
+        {
+            File archivoSeleccionado = fileChooser.getSelectedFile();
+            String rutaImagen = archivoSeleccionado.getAbsolutePath();
+
+            // Cargar la imagen en el panel 'imagen' que has definido en NetBeans
+            mostrarImagenEnPanel(archivoSeleccionado);
+
+            // Guardar la ruta de la imagen en el JTextField (si lo necesitas)
+            txtRutaImagen.setText(rutaImagen);
+        }
+    }//GEN-LAST:event_lblImagenVehiculoMouseClicked
+
+    private void mostrarImagenEnPanel(File archivoImagen)
+    {
+        try
+        {
+            // Leer la imagen del archivo seleccionado
+            Image imagen = ImageIO.read(archivoImagen);
+
+            // Redimensionar la imagen al tamaño del panel
+            imagen = imagen.getScaledInstance(imagenPanel.getWidth(), imagenPanel.getHeight(), Image.SCALE_SMOOTH);
+
+            // Crear un ImageIcon con la imagen
+            ImageIcon icono = new ImageIcon(imagen);
+
+            // Mostrar la imagen en el panel 'imagen'
+            Graphics g = imagenPanel.getGraphics();
+            g.drawImage(imagen, 0, 0, imagenPanel.getWidth(), imagenPanel.getHeight(), null);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al cargar la imagen.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void llenarTablaVehiculos()
+    {
+        DefaultTableModel modelo = (DefaultTableModel) tablaVehiculos.getModel();
+        modelo.setRowCount(0);
+
+        List<modelo.Vehiculo> vehiculos = VehiculoDAO.listarVehiculos();
+
+        for (modelo.Vehiculo vehiculo : vehiculos)
+        {
+            modelo.addRow(new Object[]
+            {
+                vehiculo.getId_vehiculo(),
+                vehiculo.getPlaca(),
+                vehiculo.getMarca(),
+                vehiculo.getModelo(),
+                vehiculo.getAño(),
+                vehiculo.getId_propietario(),
+                vehiculo.getRutaImagen()
+            });
+        }
+    }
 
     public void llenarComboPropietarios(JComboBox<String> comboPropietarios)
     {
-        VehiculosDAO vehiculosDAO = new VehiculosDAO();
+        VehiculoDAO vehiculosDAO = new VehiculoDAO();
         List<Propietario> listaPropietarios = vehiculosDAO.obtenerTodosLosPropietarios();
 
         DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
-        modelo.addElement("Seleccione un propietario"); 
+        modelo.addElement("Seleccione un propietario");
 
         for (Propietario propietario : listaPropietarios)
         {
@@ -283,26 +446,60 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         }
         comboPropietarios.setModel(modelo);
     }
+
+//    private String guardarImagen(File archivoImagen)
+//    {
+//        String rutaDestino = "imagenes_vehiculos/" + archivoImagen.getName();
+//        File destino = new File(rutaDestino);
+//
+//        try
+//        {
+//            Files.copy(archivoImagen.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+//            return rutaDestino;
+//        } catch (IOException e)
+//        {
+//            JOptionPane.showMessageDialog(this, "Error al guardar la imagen.", "Error", JOptionPane.ERROR_MESSAGE);
+//            return null;
+//        }
+//    }
+//
+//    private File seleccionarImagen()
+//    {
+//        JFileChooser fileChooser = new JFileChooser();
+//        fileChooser.setFileFilter(new FileNameExtensionFilter("Imágenes", "jpg", "png", "jpeg"));
+//
+//        int opcion = fileChooser.showOpenDialog(this);
+//        if (opcion == JFileChooser.APPROVE_OPTION)
+//        {
+//            return fileChooser.getSelectedFile();
+//        }
+//        return null;
+//    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> anioCB;
     private javax.swing.JTextField buscar;
+    private javax.swing.JPanel imagenPanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JLabel lblImagenVehiculo;
+    private javax.swing.JTextField marcaJT;
+    private javax.swing.JTextField modeloJT;
+    private javax.swing.JTextField placaJT;
+    private javax.swing.JComboBox<String> propietarioCB;
+    private javax.swing.JTable tablaVehiculos;
+    private javax.swing.JTextField txtRutaImagen;
     // End of variables declaration//GEN-END:variables
 }

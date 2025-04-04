@@ -105,7 +105,7 @@ public class PropietarioDAO
             return false;
         }
     }
-    
+
     public List<Propietario> obtenerTodosLosPropitarios()
     {
         List<Propietario> propietarios = new ArrayList<>();
@@ -116,7 +116,7 @@ public class PropietarioDAO
             while (rs.next())
             {
                 Propietario propietario = new Propietario();
-                
+
                 propietario.setId_propietario(rs.getInt("id_propietario"));
                 propietario.setNombre(rs.getString("nombre"));
                 propietario.setTelefono(rs.getString("telefono"));
@@ -127,6 +127,30 @@ public class PropietarioDAO
             System.err.println("Error al obtener los propietarios: " + e.getMessage());
         }
         return propietarios;
+    }
+
+    public int obtenerIdPorNombre(String nombre)
+    {
+        int idPropietario = -1;
+        String query = "SELECT id_propietario FROM propietario WHERE nombre = ?";
+
+        try (Connection conn = Conexion.conectar(); PreparedStatement stmt = conn.prepareStatement(query))
+        {
+
+            stmt.setString(1, nombre);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next())
+            {
+                idPropietario = rs.getInt("id_propietario");
+            }
+
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return idPropietario;
     }
 
 }
