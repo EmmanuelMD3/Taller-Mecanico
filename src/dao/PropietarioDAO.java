@@ -95,7 +95,7 @@ public class PropietarioDAO
         {
             pstmt.setString(1, propietario.getNombre());
             pstmt.setString(2, propietario.getTelefono());
-            pstmt.setInt(3, propietario.getId_propietario()); // Aquí asignas el ID correctamente
+            pstmt.setInt(3, propietario.getId_propietario()); 
 
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;

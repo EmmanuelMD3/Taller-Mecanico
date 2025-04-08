@@ -140,7 +140,7 @@ public class VtnDueño extends javax.swing.JInternalFrame
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 750, 390));
 
-        buscar.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        buscar.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         buscar.addMouseListener(new java.awt.event.MouseAdapter()
         {
             public void mouseClicked(java.awt.event.MouseEvent evt)

@@ -57,7 +57,7 @@ public class VehiculoDAO
             pstmt.setString(3, vehiculo.getModelo());
             pstmt.setInt(4, vehiculo.getAño());
             pstmt.setInt(5, vehiculo.getId_propietario());
-            pstmt.setString(6, vehiculo.getRutaImagen()); 
+            pstmt.setString(6, vehiculo.getRutaImagen());
 
             int filasAfectadas = pstmt.executeUpdate();
             return filasAfectadas > 0;
@@ -98,6 +98,50 @@ public class VehiculoDAO
         }
 
         return listaVehiculos;
+    }
+
+    public void eliminarVehiculo(long codigoVehiculo)
+    {
+        String sql = "DELETE FROM Vehiculo WHERE id_vehiculo = ?";
+
+        try (Connection conn = Conexion.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql))
+        {
+            pstmt.setLong(1, codigoVehiculo);
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0)
+            {
+                System.out.println("Vehiculo eliminado con éxito.");
+            } else
+            {
+                System.out.println("No se encontró el Vehiculo con el código especificado.");
+            }
+        } catch (SQLException e)
+        {
+            System.err.println("Error al eliminar el Vehiculo: " + e.getMessage());
+        }
+    }
+
+    public boolean modificarVehiculo(Vehiculo vehiculo)
+    {
+        String sql = "UPDATE Vehiculo SET placa = ?, marca = ?, modelo = ?, anio = ?, id_propietario = ?, ruta_imagen = ? WHERE id_vehiculo = ?";
+
+        try (Connection conn = Conexion.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql))
+        {
+            pstmt.setString(1, vehiculo.getPlaca());
+            pstmt.setString(2, vehiculo.getMarca());
+            pstmt.setString(3, vehiculo.getModelo());
+            pstmt.setInt(4, vehiculo.getAño());
+            pstmt.setInt(5, vehiculo.getId_propietario());
+            pstmt.setString(6, vehiculo.getRutaImagen());
+
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e)
+        {
+            System.err.println("Error al modificar el vehiculo: " + e.getMessage());
+            return false;
+        }
     }
 
 }

@@ -6,18 +6,18 @@ package interfaz;
 
 import dao.PropietarioDAO;
 import dao.VehiculoDAO;
+import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -38,6 +38,27 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
     public VtnVehiculos()
     {
         initComponents();
+        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
+        buscar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener()
+        {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e)
+            {
+                filtrarVehiculos();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e)
+            {
+                filtrarVehiculos();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e)
+            {
+                filtrarVehiculos();
+            }
+        });
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
     }
 
@@ -119,13 +140,13 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
             },
             new String []
             {
-                "ID VEHICULO", "PLACA ", "MARCA", "MODELO", "AÑO", "ID PROPIETARIO"
+                "ID VEHICULO", "PLACA ", "MARCA", "MODELO", "AÑO", "ID PROPIETARIO", "IMAGEN"
             }
         )
         {
             boolean[] canEdit = new boolean []
             {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex)
@@ -133,11 +154,18 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
                 return canEdit [columnIndex];
             }
         });
+        tablaVehiculos.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                tablaVehiculosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaVehiculos);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 750, 390));
 
-        buscar.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        buscar.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         buscar.addMouseListener(new java.awt.event.MouseAdapter()
         {
             public void mouseClicked(java.awt.event.MouseEvent evt)
@@ -200,16 +228,31 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         getContentPane().add(marcaJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 60, 180, -1));
 
         jButton1.setBackground(new java.awt.Color(153, 153, 255));
-        jButton1.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("MODIFICAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 460, 110, 30));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/bote-de-basura.png"))); // NOI18N
+        jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLabel6MouseClicked(evt);
+            }
+        });
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, -1, 40));
 
         jButton2.setBackground(new java.awt.Color(102, 255, 102));
-        jButton2.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("ALTA");
         jButton2.addActionListener(new java.awt.event.ActionListener()
@@ -222,7 +265,7 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 460, 110, 30));
 
         jButton3.setBackground(new java.awt.Color(255, 51, 51));
-        jButton3.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jButton3.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("CANCELAR");
         jButton3.addActionListener(new java.awt.event.ActionListener()
@@ -379,28 +422,256 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
             File archivoSeleccionado = fileChooser.getSelectedFile();
             String rutaImagen = archivoSeleccionado.getAbsolutePath();
 
-            // Cargar la imagen en el panel 'imagen' que has definido en NetBeans
             mostrarImagenEnPanel(archivoSeleccionado);
 
-            // Guardar la ruta de la imagen en el JTextField (si lo necesitas)
             txtRutaImagen.setText(rutaImagen);
         }
     }//GEN-LAST:event_lblImagenVehiculoMouseClicked
+
+    private void tablaVehiculosMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_tablaVehiculosMouseClicked
+    {//GEN-HEADEREND:event_tablaVehiculosMouseClicked
+        int filaSeleccionada = tablaVehiculos.getSelectedRow();
+
+        if (filaSeleccionada != -1)
+        {
+            DefaultTableModel modeloTabla = (DefaultTableModel) tablaVehiculos.getModel();
+
+            String placaValor = (String) modeloTabla.getValueAt(filaSeleccionada, 1);
+            String marcaValor = (String) modeloTabla.getValueAt(filaSeleccionada, 2);
+            String modeloValor = (String) modeloTabla.getValueAt(filaSeleccionada, 3);
+            int anioValor = (int) modeloTabla.getValueAt(filaSeleccionada, 4);
+            int idPropietario = (int) modeloTabla.getValueAt(filaSeleccionada, 5);
+            String rutaImagen = (String) modeloTabla.getValueAt(filaSeleccionada, 6);
+
+            placaJT.setText(placaValor);
+            marcaJT.setText(marcaValor);
+            modeloJT.setText(modeloValor);
+
+            for (int i = 0; i < anioCB.getItemCount(); i++)
+            {
+                if (anioCB.getItemAt(i).equals(String.valueOf(anioValor)))
+                {
+                    anioCB.setSelectedIndex(i);
+                    break;
+                }
+            }
+
+            for (int i = 0; i < propietarioCB.getItemCount(); i++)
+            {
+                Object item = propietarioCB.getItemAt(i);
+                if (item != null && item.toString().contains(String.valueOf(idPropietario)))
+                {
+                    propietarioCB.setSelectedIndex(i);
+                    break;
+                }
+            }
+
+            if (rutaImagen != null && !rutaImagen.isEmpty())
+            {
+                mostrarImagenEnPanel(rutaImagen);
+                txtRutaImagen.setText(rutaImagen);
+            } else
+            {
+                imagenPanel.removeAll();
+                imagenPanel.repaint();
+                txtRutaImagen.setText("");
+            }
+        }
+    }//GEN-LAST:event_tablaVehiculosMouseClicked
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabel6MouseClicked
+    {//GEN-HEADEREND:event_jLabel6MouseClicked
+        int filaSeleccionada = tablaVehiculos.getSelectedRow();
+
+        if (filaSeleccionada < 0 || filaSeleccionada >= tablaVehiculos.getRowCount())
+        {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un vehículo válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de que desea eliminar el vehículo seleccionado?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION)
+        {
+            DefaultTableModel modeloTabla = (DefaultTableModel) tablaVehiculos.getModel();
+            Object valorCelda = tablaVehiculos.getValueAt(filaSeleccionada, 0); // ID VEHICULO
+
+            long idVehiculo;
+            try
+            {
+                idVehiculo = Long.parseLong(valorCelda.toString());
+            } catch (NumberFormatException e)
+            {
+                JOptionPane.showMessageDialog(this, "Error al obtener el ID del vehículo.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            VehiculoDAO vehiculoDAO = new VehiculoDAO();
+            vehiculoDAO.eliminarVehiculo(idVehiculo);
+
+            llenarTablaVehiculos();
+            JOptionPane.showMessageDialog(this, "Vehículo eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+    }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
+    {//GEN-HEADEREND:event_jButton1ActionPerformed
+        PropietarioDAO propietarioDAO = new PropietarioDAO();
+        Propietario propietarioActualizado = new Propietario();
+        Vehiculo vehiculoActualizado = new Vehiculo();
+        VehiculoDAO vehiculoDAO = new VehiculoDAO();
+
+        int filaSeleccionada = tablaVehiculos.getSelectedRow();
+
+        if (filaSeleccionada == -1)
+        {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un Vehículo para actualizar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        DefaultTableModel modeloTabla = (DefaultTableModel) tablaVehiculos.getModel();
+
+        String nuevoPlaca = placaJT.getText();
+        String nuevoMarca = marcaJT.getText();
+        String nuevoModelo = modeloJT.getText();
+
+        if (nuevoPlaca.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "La placa no puede estar vacía.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (nuevoModelo.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "El modelo no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!nuevoPlaca.matches("^[A-Z]{3}-?\\d{3,4}|[A-Z]{2}-?\\d{2}-?[A-Z]{2}|[A-Z]{2}-?\\d{4}|\\d{3}-?[A-Z]{3}|[A-Z]\\d{6}$"))
+        {
+            JOptionPane.showMessageDialog(this, "Placa inválida. Los formatos aceptados son:\n"
+                    + "- AAA-999 (antiguo)\n"
+                    + "- AA-99-AA (nuevo)\n"
+                    + "- AA-9999 (nuevo)\n"
+                    + "- 999-AAA (nuevo)\n"
+                    + "- A999999 (nuevo)", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try
+        {
+            int nuevoAnio = Integer.parseInt(anioCB.getSelectedItem().toString());
+            String nombreSeleccionado = (String) propietarioCB.getSelectedItem();
+            int nuevoDueño = propietarioDAO.obtenerIdPorNombre(nombreSeleccionado);
+
+            if (nuevoDueño == -1)
+            {
+                JOptionPane.showMessageDialog(this, "No se encontró al propietario.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String rutaImagen = txtRutaImagen.getText();
+
+            Object valorCelda = modeloTabla.getValueAt(filaSeleccionada, 0);
+            int codigo;
+
+            try
+            {
+                codigo = Integer.parseInt(valorCelda.toString());
+            } catch (NumberFormatException e)
+            {
+                JOptionPane.showMessageDialog(this, "Error al obtener el ID del vehículo.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            vehiculoActualizado.setId_vehiculo(codigo);
+            vehiculoActualizado.setPlaca(nuevoPlaca);
+            vehiculoActualizado.setMarca(nuevoMarca);
+            vehiculoActualizado.setModelo(nuevoModelo);
+            vehiculoActualizado.setAño(nuevoAnio);
+            vehiculoActualizado.setId_propietario(nuevoDueño);
+
+            boolean exito = vehiculoDAO.modificarVehiculo(vehiculoActualizado);
+            if (exito)
+            {
+                JOptionPane.showMessageDialog(this, "Vehículo actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                llenarTablaVehiculos();
+            } else
+            {
+                JOptionPane.showMessageDialog(this, "Error al actualizar el vehículo.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(this, "Error al parsear el año. Asegúrese de que sea un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+    public void filtrarVehiculos()
+    {
+        String textoBusqueda = buscar.getText().trim().toLowerCase();
+        DefaultTableModel modeloTabla = (DefaultTableModel) tablaVehiculos.getModel();
+
+        modeloTabla.setRowCount(0);
+
+        PropietarioDAO propietarioDAO = new PropietarioDAO();
+        VehiculoDAO vehiculoDAO = new VehiculoDAO();
+
+        List<Vehiculo> vehiculos = vehiculoDAO.listarVehiculos();
+
+        for (Vehiculo vehiculo : vehiculos)
+        {
+            if (vehiculo.getPlaca().toLowerCase().contains(textoBusqueda))
+            {
+                Object[] fila =
+                {
+                    vehiculo.getId_vehiculo(),
+                    vehiculo.getPlaca(),
+                    vehiculo.getMarca(),
+                    vehiculo.getModelo(),
+                    vehiculo.getAño(),
+                    vehiculo.getId_propietario(),
+                    vehiculo.getRutaImagen()
+                };
+                modeloTabla.addRow(fila);
+            }
+        }
+    }
+
+    private void mostrarImagenEnPanel(String ruta)
+    {
+        imagenPanel.removeAll();
+        imagenPanel.repaint();
+
+        ImageIcon iconoOriginal = new ImageIcon(ruta);
+        Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(
+                imagenPanel.getWidth(), imagenPanel.getHeight(), Image.SCALE_SMOOTH
+        );
+
+        JLabel etiqueta = new JLabel(new ImageIcon(imagenEscalada));
+        etiqueta.setHorizontalAlignment(JLabel.CENTER);
+        etiqueta.setVerticalAlignment(JLabel.CENTER);
+
+        imagenPanel.setLayout(new BorderLayout());
+        imagenPanel.add(etiqueta, BorderLayout.CENTER);
+        imagenPanel.revalidate();
+    }
 
     private void mostrarImagenEnPanel(File archivoImagen)
     {
         try
         {
-            // Leer la imagen del archivo seleccionado
             Image imagen = ImageIO.read(archivoImagen);
 
-            // Redimensionar la imagen al tamaño del panel
             imagen = imagen.getScaledInstance(imagenPanel.getWidth(), imagenPanel.getHeight(), Image.SCALE_SMOOTH);
 
-            // Crear un ImageIcon con la imagen
             ImageIcon icono = new ImageIcon(imagen);
 
-            // Mostrar la imagen en el panel 'imagen'
             Graphics g = imagenPanel.getGraphics();
             g.drawImage(imagen, 0, 0, imagenPanel.getWidth(), imagenPanel.getHeight(), null);
         } catch (IOException e)
@@ -427,6 +698,7 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
                 vehiculo.getModelo(),
                 vehiculo.getAño(),
                 vehiculo.getId_propietario(),
+                vehiculo.getRutaImagen(),
                 vehiculo.getRutaImagen()
             });
         }
@@ -446,35 +718,6 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         }
         comboPropietarios.setModel(modelo);
     }
-
-//    private String guardarImagen(File archivoImagen)
-//    {
-//        String rutaDestino = "imagenes_vehiculos/" + archivoImagen.getName();
-//        File destino = new File(rutaDestino);
-//
-//        try
-//        {
-//            Files.copy(archivoImagen.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
-//            return rutaDestino;
-//        } catch (IOException e)
-//        {
-//            JOptionPane.showMessageDialog(this, "Error al guardar la imagen.", "Error", JOptionPane.ERROR_MESSAGE);
-//            return null;
-//        }
-//    }
-//
-//    private File seleccionarImagen()
-//    {
-//        JFileChooser fileChooser = new JFileChooser();
-//        fileChooser.setFileFilter(new FileNameExtensionFilter("Imágenes", "jpg", "png", "jpeg"));
-//
-//        int opcion = fileChooser.showOpenDialog(this);
-//        if (opcion == JFileChooser.APPROVE_OPTION)
-//        {
-//            return fileChooser.getSelectedFile();
-//        }
-//        return null;
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> anioCB;
