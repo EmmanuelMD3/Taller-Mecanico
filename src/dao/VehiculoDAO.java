@@ -134,6 +134,8 @@ public class VehiculoDAO
             pstmt.setInt(4, vehiculo.getAño());
             pstmt.setInt(5, vehiculo.getId_propietario());
             pstmt.setString(6, vehiculo.getRutaImagen());
+            
+            pstmt.setInt(7, vehiculo.getId_vehiculo());
 
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;

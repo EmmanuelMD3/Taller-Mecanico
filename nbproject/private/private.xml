@@ -2,13 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/chemo/Documents/Universidad/Sexto%20Semestre/Mantenimiento%20de%20Software/Taller-Mecanico/src/modelo/Vehiculo.java</file>
-            <file>file:/C:/Users/chemo/Documents/Universidad/Sexto%20Semestre/Mantenimiento%20de%20Software/Taller-Mecanico/src/dao/PropietarioDAO.java</file>
-            <file>file:/C:/Users/chemo/Documents/Universidad/Sexto%20Semestre/Mantenimiento%20de%20Software/Taller-Mecanico/src/interfaz/VtnDueño.java</file>
-            <file>file:/C:/Users/chemo/Documents/Universidad/Sexto%20Semestre/Mantenimiento%20de%20Software/Taller-Mecanico/src/interfaz/VtnPrincipal.java</file>
-            <file>file:/C:/Users/chemo/Documents/Universidad/Sexto%20Semestre/Mantenimiento%20de%20Software/Taller-Mecanico/src/dao/VehiculoDAO.java</file>
-            <file>file:/C:/Users/chemo/Documents/Universidad/Sexto%20Semestre/Mantenimiento%20de%20Software/Taller-Mecanico/src/interfaz/VtnVehiculos.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

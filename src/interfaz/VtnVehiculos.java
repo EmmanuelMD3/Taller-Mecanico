@@ -577,7 +577,7 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
                 return;
             }
 
-            String rutaImagen = txtRutaImagen.getText();
+            String rutaImagen = txtRutaImagen.getText();  // Ruta de la imagen seleccionada
 
             Object valorCelda = modeloTabla.getValueAt(filaSeleccionada, 0);
             int codigo;
@@ -597,6 +597,7 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
             vehiculoActualizado.setModelo(nuevoModelo);
             vehiculoActualizado.setAño(nuevoAnio);
             vehiculoActualizado.setId_propietario(nuevoDueño);
+            vehiculoActualizado.setRutaImagen(rutaImagen);  // ✅ Se agregó esta línea para actualizar la imagen
 
             boolean exito = vehiculoDAO.modificarVehiculo(vehiculoActualizado);
             if (exito)
