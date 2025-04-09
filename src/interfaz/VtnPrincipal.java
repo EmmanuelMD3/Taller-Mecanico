@@ -143,9 +143,18 @@ public class VtnPrincipal extends javax.swing.JFrame
 
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jMenu4MouseClicked
     {//GEN-HEADEREND:event_jMenu4MouseClicked
-        panelControl.removeAll();
-        VtnLoginAdmin login = new VtnLoginAdmin();
-        panelControl.add(login).setVisible(true);              
+        VtnLoginAdministrador login = new VtnLoginAdministrador(this, true); // this = JFrame padre, true = modal
+        login.setVisible(true); // Pausa aquí hasta que el usuario cierre el login
+
+        if (login.isAcceso())
+        {
+            panelControl.removeAll();
+            VtnEmpleados empleados = new VtnEmpleados();
+            panelControl.add(empleados).setVisible(true);
+        } else
+        {
+            System.out.println("Acceso denegado");
+        }
     }//GEN-LAST:event_jMenu4MouseClicked
 
     /**

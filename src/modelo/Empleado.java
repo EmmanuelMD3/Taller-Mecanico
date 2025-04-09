@@ -4,8 +4,6 @@
  */
 package modelo;
 
-import java.util.logging.Logger;
-
 /**
  *
  * @author chemo
@@ -14,6 +12,7 @@ public class Empleado
 {
     private int id_empleado;
     private String nombre;
+    private String apellido;
     private String correo;
     private String contraseña;
 
@@ -21,13 +20,15 @@ public class Empleado
     {
     }
 
-    public Empleado(int id_empleado, String nombre, String correo, String contraseña)
+    public Empleado(int id_empleado, String nombre, String apellido,String correo, String contraseña)
     {
         this.id_empleado = id_empleado;
         this.nombre = nombre;
+        this.apellido = apellido;
         this.correo = correo;
         this.contraseña = contraseña;
     }
+
 
     /**
      * @return the id_empleado
@@ -92,7 +93,21 @@ public class Empleado
     {
         this.contraseña = contraseña;
     }
-    
-    
-    
+
+    /**
+     * @return the apellido
+     */
+    public String getApellido()
+    {
+        return apellido;
+    }
+
+    /**
+     * @param apellido the apellido to set
+     */
+    public void setApellido(String apellido)
+    {
+        this.apellido = apellido;
+    }
+  
 }
