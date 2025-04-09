@@ -4,6 +4,8 @@
  */
 package interfaz;
 
+import java.awt.BorderLayout;
+import javax.swing.JOptionPane;
 import modelo.Vehiculo;
 
 /**
@@ -36,6 +38,7 @@ public class VtnPrincipal extends javax.swing.JFrame
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Taller Mecanico Autofix");
@@ -60,6 +63,7 @@ public class VtnPrincipal extends javax.swing.JFrame
 
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/hombre.png"))); // NOI18N
         jMenu1.setText("Dueños");
+        jMenu1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu1.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jMenu1.addMouseListener(new java.awt.event.MouseAdapter()
         {
@@ -72,6 +76,7 @@ public class VtnPrincipal extends javax.swing.JFrame
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carros.png"))); // NOI18N
         jMenu2.setText("Vehiculos");
+        jMenu2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu2.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jMenu2.addMouseListener(new java.awt.event.MouseAdapter()
         {
@@ -84,6 +89,8 @@ public class VtnPrincipal extends javax.swing.JFrame
 
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/caja-de-herramientas.png"))); // NOI18N
         jMenu3.setText("Mantenimientos");
+        jMenu3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenu3.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jMenu3.addMouseListener(new java.awt.event.MouseAdapter()
         {
             public void mouseClicked(java.awt.event.MouseEvent evt)
@@ -92,6 +99,20 @@ public class VtnPrincipal extends javax.swing.JFrame
             }
         });
         jMenuBar1.add(jMenu3);
+
+        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/alquiler.png"))); // NOI18N
+        jMenu4.setText("Empleados");
+        jMenu4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenu4.setFocusable(false);
+        jMenu4.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jMenu4.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jMenu4MouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
 
@@ -119,6 +140,13 @@ public class VtnPrincipal extends javax.swing.JFrame
         VtnMantenimientos mantenimientos = new VtnMantenimientos();
         panelControl.add(mantenimientos).setVisible(true);
     }//GEN-LAST:event_jMenu3MouseClicked
+
+    private void jMenu4MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jMenu4MouseClicked
+    {//GEN-HEADEREND:event_jMenu4MouseClicked
+        panelControl.removeAll();
+        VtnLoginAdmin login = new VtnLoginAdmin();
+        panelControl.add(login).setVisible(true);              
+    }//GEN-LAST:event_jMenu4MouseClicked
 
     /**
      * @param args the command line arguments
@@ -169,6 +197,7 @@ public class VtnPrincipal extends javax.swing.JFrame
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JDesktopPane panelControl;
     // End of variables declaration//GEN-END:variables

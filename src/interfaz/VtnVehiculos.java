@@ -4,6 +4,7 @@
  */
 package interfaz;
 
+import cjb.ci.CtrlInterfaz;
 import dao.PropietarioDAO;
 import dao.VehiculoDAO;
 import java.awt.BorderLayout;
@@ -85,7 +86,6 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         lblImagenVehiculo = new javax.swing.JLabel();
         imagenPanel = new javax.swing.JPanel();
         marcaJT = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -96,6 +96,7 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         propietarioCB = new javax.swing.JComboBox<>();
         anioCB = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         txtRutaImagen.setText("jTextField1");
 
@@ -227,19 +228,6 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         });
         getContentPane().add(marcaJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 60, 180, -1));
 
-        jButton1.setBackground(new java.awt.Color(153, 153, 255));
-        jButton1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("MODIFICAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 460, 110, 30));
-
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/bote-de-basura.png"))); // NOI18N
         jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel6.addMouseListener(new java.awt.event.MouseAdapter()
@@ -255,6 +243,7 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         jButton2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("ALTA");
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton2.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -267,7 +256,8 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         jButton3.setBackground(new java.awt.Color(255, 51, 51));
         jButton3.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("CANCELAR");
+        jButton3.setText("LIMPIAR");
+        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton3.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -275,7 +265,7 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 460, 110, 30));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 460, 110, 30));
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel7.setText("Marca:");
@@ -310,6 +300,20 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         jLabel10.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel10.setText("Propietario:");
         getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 150, -1, -1));
+
+        jButton1.setBackground(new java.awt.Color(153, 153, 255));
+        jButton1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("MODIFICAR");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 460, -1, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -395,7 +399,13 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton3ActionPerformed
     {//GEN-HEADEREND:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        CtrlInterfaz.limpia(placaJT, marcaJT, modeloJT);
+
+        anioCB.setSelectedIndex(0);
+        propietarioCB.setSelectedIndex(0);
+
+        imagenPanel.removeAll();
+        imagenPanel.repaint();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void modeloJTActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_modeloJTActionPerformed
@@ -456,13 +466,18 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
                 }
             }
 
-            for (int i = 0; i < propietarioCB.getItemCount(); i++)
+            PropietarioDAO propietarioDAO = new PropietarioDAO();
+            String nombrePropietario = propietarioDAO.obtenerNombrePorId(idPropietario);
+
+            if (nombrePropietario != null)
             {
-                Object item = propietarioCB.getItemAt(i);
-                if (item != null && item.toString().contains(String.valueOf(idPropietario)))
+                for (int i = 0; i < propietarioCB.getItemCount(); i++)
                 {
-                    propietarioCB.setSelectedIndex(i);
-                    break;
+                    if (propietarioCB.getItemAt(i).equals(nombrePropietario))
+                    {
+                        propietarioCB.setSelectedIndex(i);
+                        break;
+                    }
                 }
             }
 

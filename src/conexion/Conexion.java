@@ -14,7 +14,6 @@ import java.sql.SQLException;
  */
 public class Conexion
 {
-
     private static final String url = "jdbc:mysql://localhost:3306/Taller"; 
     private static final String usuario = "root";
     private static final String contraseña = "Emmanuel360";
@@ -25,7 +24,7 @@ public class Conexion
         try
         {
             connection = DriverManager.getConnection(url, usuario, contraseña);
-            System.out.println("Conexión exitosa a la base de datos.");
+            System.out.println("Conexion exitosa a la base de datos.");
         } catch (SQLException e)
         {
             System.out.println("Error al conectar a la base de datos.");

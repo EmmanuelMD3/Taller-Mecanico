@@ -95,7 +95,7 @@ public class PropietarioDAO
         {
             pstmt.setString(1, propietario.getNombre());
             pstmt.setString(2, propietario.getTelefono());
-            pstmt.setInt(3, propietario.getId_propietario()); 
+            pstmt.setInt(3, propietario.getId_propietario());
 
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
@@ -151,6 +151,28 @@ public class PropietarioDAO
         }
 
         return idPropietario;
+    }
+
+    public String obtenerNombrePorId(int id)
+    {
+        String sql = "SELECT nombre FROM Propietario WHERE id_propietario = ?";
+
+        try (Connection conn = Conexion.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql))
+        {
+
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next())
+            {
+                return rs.getString("nombre");
+            }
+        } catch (SQLException e)
+        {
+            System.err.println("Error al obtener nombre del propietario: " + e.getMessage());
+        }
+
+        return null;
     }
 
 }

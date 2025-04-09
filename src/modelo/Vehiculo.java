@@ -10,7 +10,6 @@ package modelo;
  */
 public class Vehiculo
 {
-
     private int id_vehiculo;
     private String placa;
     private String marca;
