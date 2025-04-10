@@ -4,8 +4,17 @@
  */
 package interfaz;
 
-import cjb.ci.CtrlInterfaz;
+import dao.EmpleadoDAO;
+import dao.MantenimientoDAO;
+import dao.VehiculoDAO;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import modelo.Empleado;
+import modelo.Mantenimiento;
+import modelo.Vehiculo;
 
 /**
  *
@@ -13,8 +22,9 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  */
 public class VtnMantenimientos extends javax.swing.JInternalFrame
 {
+
     private com.toedter.calendar.JDateChooser fecha;
-    
+
     /**
      * Creates new form VtnDueño
      */
@@ -22,11 +32,10 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
     {
         initComponents();
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        
+
         fecha = new com.toedter.calendar.JDateChooser();
 
         fecha.setBounds(0, 0, 150, 30);
-        
 
         calendario.setLayout(null);
 
@@ -50,22 +59,47 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        modificar = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        alta = new javax.swing.JButton();
+        limpiar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        descripccionJT = new javax.swing.JTextArea();
         calendario = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        comboVehiculos = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        comboEmpleados = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setPreferredSize(new java.awt.Dimension(1150, 520));
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener()
+        {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt)
+            {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt)
+            {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt)
+            {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt)
+            {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt)
+            {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt)
+            {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt)
+            {
+                formInternalFrameOpened(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -130,50 +164,51 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         jLabel4.setText("Descripccion:");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 90, -1, -1));
 
-        jButton1.setBackground(new java.awt.Color(153, 153, 255));
-        jButton1.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("MODIFICAR");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 450, 110, 30));
+        modificar.setBackground(new java.awt.Color(153, 153, 255));
+        modificar.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        modificar.setForeground(new java.awt.Color(255, 255, 255));
+        modificar.setText("MODIFICAR");
+        getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 450, 110, 30));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/bote-de-basura.png"))); // NOI18N
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, -1, 40));
 
-        jButton2.setBackground(new java.awt.Color(102, 255, 102));
-        jButton2.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("ALTA");
-        jButton2.addActionListener(new java.awt.event.ActionListener()
+        alta.setBackground(new java.awt.Color(102, 255, 102));
+        alta.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        alta.setForeground(new java.awt.Color(255, 255, 255));
+        alta.setText("ALTA");
+        alta.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButton2ActionPerformed(evt);
+                altaActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 450, 110, 30));
+        getContentPane().add(alta, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 450, 110, 30));
 
-        jButton3.setBackground(new java.awt.Color(255, 51, 51));
-        jButton3.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("CANCELAR");
-        jButton3.addActionListener(new java.awt.event.ActionListener()
+        limpiar.setBackground(new java.awt.Color(255, 51, 51));
+        limpiar.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        limpiar.setForeground(new java.awt.Color(255, 255, 255));
+        limpiar.setText("LIMPIAR");
+        limpiar.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButton3ActionPerformed(evt);
+                limpiarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 450, 110, 30));
+        getContentPane().add(limpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 450, 110, 30));
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel7.setText("Empleado:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 300, -1, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 300, -1, -1));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        descripccionJT.setColumns(20);
+        descripccionJT.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        descripccionJT.setRows(5);
+        jScrollPane2.setViewportView(descripccionJT);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 120, 360, -1));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 120, 370, -1));
 
         calendario.setBackground(new java.awt.Color(255, 255, 255));
         calendario.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
@@ -183,24 +218,24 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         jLabel8.setText("Fecha:");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 230, -1, -1));
 
-        jComboBox1.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 330, 160, -1));
+        comboVehiculos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        comboVehiculos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(comboVehiculos, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 330, 180, -1));
 
         jLabel9.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel9.setText("Vehiculo: ");
         getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 300, -1, -1));
 
-        jComboBox2.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 330, 160, -1));
+        comboEmpleados.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        comboEmpleados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(comboEmpleados, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 330, 170, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void buscarMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_buscarMouseClicked
     {//GEN-HEADEREND:event_buscarMouseClicked
-            
+
     }//GEN-LAST:event_buscarMouseClicked
 
     private void buscarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buscarActionPerformed
@@ -208,25 +243,108 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         // TODO add your handling code here:
     }//GEN-LAST:event_buscarActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton2ActionPerformed
-    {//GEN-HEADEREND:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void altaActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_altaActionPerformed
+    {//GEN-HEADEREND:event_altaActionPerformed
+        String descipccion = descripccionJT.getText().trim();
+        if (descipccion.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "La Descripccion no puede estar vacía.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton3ActionPerformed
-    {//GEN-HEADEREND:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+        String vehiculoSeleccionado = (String) comboVehiculos.getSelectedItem();
 
+        VehiculoDAO vehiculoDAO = new VehiculoDAO();
+        int idVehiculo = vehiculoDAO.obtenerIdPorPlaca(vehiculoSeleccionado);
+
+        String empledoSeleccionado = (String) comboEmpleados.getSelectedItem();
+
+        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+        int idEmpleado = empleadoDAO.obtenerIdPorNombre(empledoSeleccionado);
+
+        if (idVehiculo == -1)
+        {
+            JOptionPane.showMessageDialog(this, "No se encontró el Vehiculo.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (idEmpleado == -1)
+        {
+            JOptionPane.showMessageDialog(this, "No se encontró el Empleado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (fecha.getDate() == null)
+        {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        java.sql.Date fechaSeleccionada = new java.sql.Date(fecha.getDate().getTime());
+        
+        Mantenimiento nuevoMantenimiento = new Mantenimiento(0, descipccion, fechaSeleccionada, idVehiculo, idEmpleado);
+        MantenimientoDAO manetnieminetoDao = new MantenimientoDAO();
+        boolean exito = manetnieminetoDao.insertarMantenimiento(nuevoMantenimiento);
+        if (exito)
+        {
+          JOptionPane.showMessageDialog(this, "Mantenimiento agregado con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);  
+        }else
+        {
+            JOptionPane.showMessageDialog(this, "Mantenimiento no agregado", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_altaActionPerformed
+
+    private void limpiarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_limpiarActionPerformed
+    {//GEN-HEADEREND:event_limpiarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_limpiarActionPerformed
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt)//GEN-FIRST:event_formInternalFrameOpened
+    {//GEN-HEADEREND:event_formInternalFrameOpened
+        llenarComboEmpleados(comboEmpleados);
+        llenarComboVehiculos(comboVehiculos);
+    }//GEN-LAST:event_formInternalFrameOpened
+
+    public void llenarComboEmpleados(JComboBox<String> comboEmpleados)
+    {
+        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+
+        List<Empleado> listaEmpleados = empleadoDAO.obtenerTodosLosEmpleados();
+
+        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
+        modelo.addElement("Seleccione un Empleado");
+
+        for (Empleado empleado : listaEmpleados)
+        {
+            modelo.addElement(empleado.getNombre());
+        }
+        comboEmpleados.setModel(modelo);
+    }
+
+    public void llenarComboVehiculos(JComboBox<String> comboVehiculos)
+    {
+
+        VehiculoDAO vehiculoDAO = new VehiculoDAO();
+
+        List<Vehiculo> listaVehiculo = vehiculoDAO.obtenerTodosLosVehiculos();
+
+        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
+        modelo.addElement("Seleccione un Vehiculo");
+
+        for (Vehiculo vehiculo : listaVehiculo)
+        {
+            modelo.addElement(vehiculo.getPlaca());
+
+        }
+        comboVehiculos.setModel(modelo);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton alta;
     private javax.swing.JTextField buscar;
     private javax.swing.JPanel calendario;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> comboEmpleados;
+    private javax.swing.JComboBox<String> comboVehiculos;
+    private javax.swing.JTextArea descripccionJT;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -238,6 +356,7 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JButton limpiar;
+    private javax.swing.JButton modificar;
     // End of variables declaration//GEN-END:variables
 }

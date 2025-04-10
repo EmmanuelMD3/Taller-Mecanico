@@ -111,7 +111,7 @@ public class EmpleadoDAO
         }
     }
     
-    public List<Empleado> obtenerTodosLosPropitarios()
+    public List<Empleado> obtenerTodosLosEmpleados()
     {
         List<Empleado> empleados = new ArrayList<>();
         String sql = "SELECT id_empleado, nombre, apellido, correo FROM Empleado";
@@ -133,5 +133,29 @@ public class EmpleadoDAO
             System.err.println("Error al obtener los propietarios: " + e.getMessage());
         }
         return empleados;
+    }
+    
+    public int obtenerIdPorNombre(String nombre)
+    {
+        int idEmpleado = -1;
+        String query = "SELECT id_empleado FROM Empleado WHERE nombre = ?";
+
+        try (Connection conn = Conexion.conectar(); PreparedStatement stmt = conn.prepareStatement(query))
+        {
+
+            stmt.setString(1, nombre);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next())
+            {
+                idEmpleado = rs.getInt("id_empleado");
+            }
+
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return idEmpleado;
     }
 }

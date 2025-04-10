@@ -531,7 +531,7 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
 
         EmpleadoDAO empleadoDAO = new EmpleadoDAO();
 
-        List<Empleado> empleados = empleadoDAO.obtenerTodosLosPropitarios();
+        List<Empleado> empleados = empleadoDAO.obtenerTodosLosEmpleados();
 
         for (Empleado empleado : empleados)
         {

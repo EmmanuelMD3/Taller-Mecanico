@@ -44,6 +44,30 @@ public class VehiculoDAO
         }
         return propietarios;
     }
+    
+    public List<Vehiculo> obtenerTodosLosVehiculos()
+    {
+        List<Vehiculo> vehiculos = new ArrayList<>();
+        String sql = "SELECT id_vehiculo, placa, marca FROM Vehiculo";
+
+        try (Connection conn = Conexion.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery())
+        {
+
+            while (rs.next())
+            {
+                Vehiculo vehiculo = new Vehiculo();
+                vehiculo.setId_propietario(rs.getInt("id_vehiculo"));
+                vehiculo.setPlaca(rs.getString("placa"));
+                vehiculo.setMarca(rs.getString("marca"));
+                vehiculos.add(vehiculo);
+            }
+
+        } catch (SQLException e)
+        {
+            System.err.println("Error al obtener los propietarios: " + e.getMessage());
+        }
+        return vehiculos;
+    }
 
     public boolean insertarVehiculo(Vehiculo vehiculo)
     {
@@ -144,6 +168,30 @@ public class VehiculoDAO
             System.err.println("Error al modificar el vehiculo: " + e.getMessage());
             return false;
         }
+    }
+    
+    public int obtenerIdPorPlaca(String placa)
+    {
+        int idVehiculo = -1;
+        String query = "SELECT id_Vehiculo FROM Vehiculo WHERE placa = ?";
+
+        try (Connection conn = Conexion.conectar(); PreparedStatement stmt = conn.prepareStatement(query))
+        {
+
+            stmt.setString(1, placa);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next())
+            {
+                idVehiculo = rs.getInt("id_vehiculo");
+            }
+
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return idVehiculo;
     }
 
 }

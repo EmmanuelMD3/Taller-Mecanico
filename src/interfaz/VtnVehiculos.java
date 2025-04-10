@@ -87,8 +87,8 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         imagenPanel = new javax.swing.JPanel();
         marcaJT = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        alta = new javax.swing.JButton();
+        limpiar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         modeloJT = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -96,7 +96,7 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         propietarioCB = new javax.swing.JComboBox<>();
         anioCB = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        modificar = new javax.swing.JButton();
 
         txtRutaImagen.setText("jTextField1");
 
@@ -239,33 +239,33 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         });
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, -1, 40));
 
-        jButton2.setBackground(new java.awt.Color(102, 255, 102));
-        jButton2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("ALTA");
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton2.addActionListener(new java.awt.event.ActionListener()
+        alta.setBackground(new java.awt.Color(102, 255, 102));
+        alta.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        alta.setForeground(new java.awt.Color(255, 255, 255));
+        alta.setText("ALTA");
+        alta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        alta.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButton2ActionPerformed(evt);
+                altaActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 460, 110, 30));
+        getContentPane().add(alta, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 460, 110, 30));
 
-        jButton3.setBackground(new java.awt.Color(255, 51, 51));
-        jButton3.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("LIMPIAR");
-        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton3.addActionListener(new java.awt.event.ActionListener()
+        limpiar.setBackground(new java.awt.Color(255, 51, 51));
+        limpiar.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        limpiar.setForeground(new java.awt.Color(255, 255, 255));
+        limpiar.setText("LIMPIAR");
+        limpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        limpiar.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButton3ActionPerformed(evt);
+                limpiarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 460, 110, 30));
+        getContentPane().add(limpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 460, 110, 30));
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel7.setText("Marca:");
@@ -301,19 +301,19 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         jLabel10.setText("Propietario:");
         getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 150, -1, -1));
 
-        jButton1.setBackground(new java.awt.Color(153, 153, 255));
-        jButton1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("MODIFICAR");
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.addActionListener(new java.awt.event.ActionListener()
+        modificar.setBackground(new java.awt.Color(153, 153, 255));
+        modificar.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        modificar.setForeground(new java.awt.Color(255, 255, 255));
+        modificar.setText("MODIFICAR");
+        modificar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        modificar.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButton1ActionPerformed(evt);
+                modificarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 460, -1, 30));
+        getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 460, -1, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -333,8 +333,8 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
 
     }//GEN-LAST:event_marcaJTActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton2ActionPerformed
-    {//GEN-HEADEREND:event_jButton2ActionPerformed
+    private void altaActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_altaActionPerformed
+    {//GEN-HEADEREND:event_altaActionPerformed
         String placa = placaJT.getText();
         String modelo = modeloJT.getText();
         String marca = marcaJT.getText();
@@ -395,10 +395,10 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         {
             JOptionPane.showMessageDialog(this, "Error al agregar el vehículo.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_altaActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton3ActionPerformed
-    {//GEN-HEADEREND:event_jButton3ActionPerformed
+    private void limpiarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_limpiarActionPerformed
+    {//GEN-HEADEREND:event_limpiarActionPerformed
         CtrlInterfaz.limpia(placaJT, marcaJT, modeloJT);
 
         anioCB.setSelectedIndex(0);
@@ -406,7 +406,7 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
 
         imagenPanel.removeAll();
         imagenPanel.repaint();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_limpiarActionPerformed
 
     private void modeloJTActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_modeloJTActionPerformed
     {//GEN-HEADEREND:event_modeloJTActionPerformed
@@ -536,8 +536,8 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
 
     }//GEN-LAST:event_jLabel6MouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
-    {//GEN-HEADEREND:event_jButton1ActionPerformed
+    private void modificarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_modificarActionPerformed
+    {//GEN-HEADEREND:event_modificarActionPerformed
         PropietarioDAO propietarioDAO = new PropietarioDAO();
         Propietario propietarioActualizado = new Propietario();
         Vehiculo vehiculoActualizado = new Vehiculo();
@@ -627,7 +627,7 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         {
             JOptionPane.showMessageDialog(this, "Error al parsear el año. Asegúrese de que sea un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_modificarActionPerformed
     public void filtrarVehiculos()
     {
         String textoBusqueda = buscar.getText().trim().toLowerCase();
@@ -734,14 +734,12 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         }
         comboPropietarios.setModel(modelo);
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton alta;
     private javax.swing.JComboBox<String> anioCB;
     private javax.swing.JTextField buscar;
     private javax.swing.JPanel imagenPanel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -754,8 +752,10 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblImagenVehiculo;
+    private javax.swing.JButton limpiar;
     private javax.swing.JTextField marcaJT;
     private javax.swing.JTextField modeloJT;
+    private javax.swing.JButton modificar;
     private javax.swing.JTextField placaJT;
     private javax.swing.JComboBox<String> propietarioCB;
     private javax.swing.JTable tablaVehiculos;
