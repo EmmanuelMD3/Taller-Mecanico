@@ -110,7 +110,7 @@ public class EmpleadoDAO
             System.err.println("Error al eliminar el Empleado: " + e.getMessage());
         }
     }
-    
+
     public List<Empleado> obtenerTodosLosEmpleados()
     {
         List<Empleado> empleados = new ArrayList<>();
@@ -121,7 +121,7 @@ public class EmpleadoDAO
             while (rs.next())
             {
                 Empleado empleado = new Empleado();
-                
+
                 empleado.setId_empleado(rs.getInt("id_empleado"));
                 empleado.setNombre(rs.getString("nombre"));
                 empleado.setApellido(rs.getString("apellido"));
@@ -134,7 +134,7 @@ public class EmpleadoDAO
         }
         return empleados;
     }
-    
+
     public int obtenerIdPorNombre(String nombre)
     {
         int idEmpleado = -1;
@@ -158,4 +158,25 @@ public class EmpleadoDAO
 
         return idEmpleado;
     }
+
+    public String obtenerNombrePorId(int idEmpleado)
+    {
+        String sql = "SELECT nombre FROM Empleado WHERE id_empleado = ?";
+        try (Connection conn = Conexion.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql))
+        {
+            pstmt.setInt(1, idEmpleado);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next())
+            {
+                return rs.getString("nombre");
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+ 
+
 }

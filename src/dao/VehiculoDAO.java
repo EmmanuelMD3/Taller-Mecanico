@@ -44,7 +44,7 @@ public class VehiculoDAO
         }
         return propietarios;
     }
-    
+
     public List<Vehiculo> obtenerTodosLosVehiculos()
     {
         List<Vehiculo> vehiculos = new ArrayList<>();
@@ -158,7 +158,7 @@ public class VehiculoDAO
             pstmt.setInt(4, vehiculo.getAño());
             pstmt.setInt(5, vehiculo.getId_propietario());
             pstmt.setString(6, vehiculo.getRutaImagen());
-            
+
             pstmt.setInt(7, vehiculo.getId_vehiculo());
 
             int affectedRows = pstmt.executeUpdate();
@@ -169,7 +169,7 @@ public class VehiculoDAO
             return false;
         }
     }
-    
+
     public int obtenerIdPorPlaca(String placa)
     {
         int idVehiculo = -1;
@@ -192,6 +192,24 @@ public class VehiculoDAO
         }
 
         return idVehiculo;
+    }
+
+    public String obtenerPlacaPorId(int idVehiculo)
+    {
+        String sql = "SELECT placa FROM Vehiculo WHERE id_vehiculo = ?";
+        try (Connection conn = Conexion.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql))
+        {
+            pstmt.setInt(1, idVehiculo);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next())
+            {
+                return rs.getString("placa");
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

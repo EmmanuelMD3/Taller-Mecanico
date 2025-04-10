@@ -7,14 +7,17 @@ package interfaz;
 import dao.EmpleadoDAO;
 import dao.MantenimientoDAO;
 import dao.VehiculoDAO;
+import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
 import modelo.Empleado;
 import modelo.Mantenimiento;
 import modelo.Vehiculo;
+import cjb.ci.CtrlInterfaz;
 
 /**
  *
@@ -40,6 +43,28 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         calendario.setLayout(null);
 
         calendario.add(fecha);
+
+        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
+        buscar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener()
+        {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e)
+            {
+                filtrarMantenimiento();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e)
+            {
+                filtrarMantenimiento();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e)
+            {
+                filtrarMantenimiento();
+            }
+        });
     }
 
     /**
@@ -53,7 +78,7 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
     {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaMantenimientos = new javax.swing.JTable();
         buscar = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -105,8 +130,8 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-        jTable1.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaMantenimientos.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        tablaMantenimientos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][]
             {
 
@@ -127,7 +152,14 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        tablaMantenimientos.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                tablaMantenimientosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaMantenimientos);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 750, 390));
 
@@ -168,15 +200,32 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         modificar.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         modificar.setForeground(new java.awt.Color(255, 255, 255));
         modificar.setText("MODIFICAR");
+        modificar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        modificar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                modificarActionPerformed(evt);
+            }
+        });
         getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 450, 110, 30));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/bote-de-basura.png"))); // NOI18N
+        jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLabel6MouseClicked(evt);
+            }
+        });
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, -1, 40));
 
         alta.setBackground(new java.awt.Color(102, 255, 102));
         alta.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         alta.setForeground(new java.awt.Color(255, 255, 255));
         alta.setText("ALTA");
+        alta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         alta.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -190,6 +239,7 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         limpiar.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         limpiar.setForeground(new java.awt.Color(255, 255, 255));
         limpiar.setText("LIMPIAR");
+        limpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         limpiar.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -220,6 +270,7 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
 
         comboVehiculos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         comboVehiculos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboVehiculos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         getContentPane().add(comboVehiculos, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 330, 180, -1));
 
         jLabel9.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
@@ -228,6 +279,7 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
 
         comboEmpleados.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         comboEmpleados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboEmpleados.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         getContentPane().add(comboEmpleados, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 330, 170, -1));
 
         pack();
@@ -280,14 +332,15 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
             return;
         }
         java.sql.Date fechaSeleccionada = new java.sql.Date(fecha.getDate().getTime());
-        
+
         Mantenimiento nuevoMantenimiento = new Mantenimiento(0, descipccion, fechaSeleccionada, idVehiculo, idEmpleado);
         MantenimientoDAO manetnieminetoDao = new MantenimientoDAO();
         boolean exito = manetnieminetoDao.insertarMantenimiento(nuevoMantenimiento);
         if (exito)
         {
-          JOptionPane.showMessageDialog(this, "Mantenimiento agregado con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);  
-        }else
+            JOptionPane.showMessageDialog(this, "Mantenimiento agregado con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
+            llenarTablaMantenimientos();
+        } else
         {
             JOptionPane.showMessageDialog(this, "Mantenimiento no agregado", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -295,14 +348,232 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
 
     private void limpiarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_limpiarActionPerformed
     {//GEN-HEADEREND:event_limpiarActionPerformed
-        // TODO add your handling code here:
+        CtrlInterfaz.limpia(descripccionJT);
+        comboEmpleados.setSelectedIndex(0);
+        comboVehiculos.setSelectedIndex(0);
+
+        fecha.setDate(null);
     }//GEN-LAST:event_limpiarActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt)//GEN-FIRST:event_formInternalFrameOpened
     {//GEN-HEADEREND:event_formInternalFrameOpened
         llenarComboEmpleados(comboEmpleados);
         llenarComboVehiculos(comboVehiculos);
+        llenarTablaMantenimientos();
     }//GEN-LAST:event_formInternalFrameOpened
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabel6MouseClicked
+    {//GEN-HEADEREND:event_jLabel6MouseClicked
+        int filaSeleccionada = tablaMantenimientos.getSelectedRow();
+
+        if (filaSeleccionada < 0 || filaSeleccionada >= tablaMantenimientos.getRowCount())
+        {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un mantenimiento válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de que desea eliminar el mantenimiento seleccionado?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION)
+        {
+            DefaultTableModel modeloTabla = (DefaultTableModel) tablaMantenimientos.getModel();
+            Object valorCelda = tablaMantenimientos.getValueAt(filaSeleccionada, 0);
+
+            long idMantenimiento;
+            try
+            {
+                idMantenimiento = Long.parseLong(valorCelda.toString());
+            } catch (NumberFormatException e)
+            {
+                JOptionPane.showMessageDialog(this, "Error al obtener el ID del mantenimiento.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            MantenimientoDAO mantenimientoDAO = new MantenimientoDAO();
+            mantenimientoDAO.eliminarMantenimiento(idMantenimiento);
+
+            llenarTablaMantenimientos();
+            JOptionPane.showMessageDialog(this, "Mantenimiento eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void tablaMantenimientosMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_tablaMantenimientosMouseClicked
+    {//GEN-HEADEREND:event_tablaMantenimientosMouseClicked
+        int filaSeleccionada = tablaMantenimientos.getSelectedRow();
+
+        if (filaSeleccionada != -1)
+        {
+            DefaultTableModel modeloTabla = (DefaultTableModel) tablaMantenimientos.getModel();
+
+            String descripcion = (String) modeloTabla.getValueAt(filaSeleccionada, 1);
+            Date fecha = (Date) modeloTabla.getValueAt(filaSeleccionada, 2);
+            int idVehiculo = (int) modeloTabla.getValueAt(filaSeleccionada, 3);
+            int idEmpleado = (int) modeloTabla.getValueAt(filaSeleccionada, 4);
+
+            descripccionJT.setText(descripcion);
+
+            this.fecha.setDate(fecha);
+
+            VehiculoDAO vehiculoDAO = new VehiculoDAO();
+            String placaVehiculo = vehiculoDAO.obtenerPlacaPorId(idVehiculo);
+
+            if (placaVehiculo != null)
+            {
+                for (int i = 0; i < comboVehiculos.getItemCount(); i++)
+                {
+                    if (comboVehiculos.getItemAt(i).equals(placaVehiculo))
+                    {
+                        comboVehiculos.setSelectedIndex(i);
+                        break;
+                    }
+                }
+            }
+
+            EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+            String nombreEmpleado = empleadoDAO.obtenerNombrePorId(idEmpleado);
+
+            if (nombreEmpleado != null)
+            {
+                for (int i = 0; i < comboEmpleados.getItemCount(); i++)
+                {
+                    if (comboEmpleados.getItemAt(i).equals(nombreEmpleado))
+                    {
+                        comboEmpleados.setSelectedIndex(i);
+                        break;
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_tablaMantenimientosMouseClicked
+
+    private void modificarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_modificarActionPerformed
+    {//GEN-HEADEREND:event_modificarActionPerformed
+        MantenimientoDAO mantenimientoDAO = new MantenimientoDAO();
+        VehiculoDAO vehiculoDAO = new VehiculoDAO();
+        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+        Mantenimiento mantenimientoActualizado = new Mantenimiento();
+
+        int filaSeleccionada = tablaMantenimientos.getSelectedRow();
+
+        if (filaSeleccionada == -1)
+        {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un mantenimiento para modificar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        DefaultTableModel modeloTabla = (DefaultTableModel) tablaMantenimientos.getModel();
+
+        String descripcion = descripccionJT.getText().trim();
+
+        if (fecha.getDate() == null)
+        {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        java.sql.Date fechaSeleccionada = new java.sql.Date(fecha.getDate().getTime());
+        String vehiculoSeleccionado = (String) comboVehiculos.getSelectedItem();
+        String empleadoSeleccionado = (String) comboEmpleados.getSelectedItem();
+
+        if (descripcion.isEmpty() || vehiculoSeleccionado == null || empleadoSeleccionado == null)
+        {
+            JOptionPane.showMessageDialog(this, "Todos los campos deben estar llenos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int idVehiculo = vehiculoDAO.obtenerIdPorPlaca(vehiculoSeleccionado);
+        int idEmpleado = empleadoDAO.obtenerIdPorNombre(empleadoSeleccionado);
+
+        if (idVehiculo == -1 || idEmpleado == -1)
+        {
+            JOptionPane.showMessageDialog(this, "No se pudo obtener el ID del vehículo o empleado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int idMantenimiento;
+        try
+        {
+            Object valorCelda = modeloTabla.getValueAt(filaSeleccionada, 0);
+            idMantenimiento = Integer.parseInt(valorCelda.toString());
+        } catch (NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(this, "Error al obtener el ID del mantenimiento.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        mantenimientoActualizado.setId_mantenimiento(idMantenimiento);
+        mantenimientoActualizado.setDescripccion(descripcion);
+        mantenimientoActualizado.setFecha(fechaSeleccionada);
+        mantenimientoActualizado.setId_vehiculo(idVehiculo);
+        mantenimientoActualizado.setId_empleado(idEmpleado);
+
+        boolean exito = mantenimientoDAO.modificarMantenimiento(mantenimientoActualizado);
+
+        if (exito)
+        {
+            JOptionPane.showMessageDialog(this, "Mantenimiento actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            llenarTablaMantenimientos();
+        } else
+        {
+            JOptionPane.showMessageDialog(this, "Error al actualizar el mantenimiento.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_modificarActionPerformed
+
+    public void filtrarMantenimiento()
+    {
+        String textoBusqueda = buscar.getText().trim().toLowerCase();
+        DefaultTableModel modeloTabla = (DefaultTableModel) tablaMantenimientos.getModel();
+
+        modeloTabla.setRowCount(0);
+
+        MantenimientoDAO mantenimientoDAO = new MantenimientoDAO();
+        VehiculoDAO vehiculoDAO = new VehiculoDAO();
+
+        List<Vehiculo> vehiculos = vehiculoDAO.listarVehiculos();
+        List<Mantenimiento> mantenimientos = mantenimientoDAO.listarMantenimientoFiltro();
+
+        for (Mantenimiento mantenimiento : mantenimientos)
+        {
+            if (mantenimiento.getDescripccion().toLowerCase().contains(textoBusqueda))
+            {
+                Object[] fila =
+                {
+                    mantenimiento.getId_mantenimiento(),
+                    mantenimiento.getDescripccion(),
+                    mantenimiento.getFecha(),
+                    mantenimiento.getId_vehiculo(),
+                    mantenimiento.getId_empleado()
+                };
+                modeloTabla.addRow(fila);
+            }
+        }
+    }
+
+    private void llenarTablaMantenimientos()
+    {
+        DefaultTableModel modelo = (DefaultTableModel) tablaMantenimientos.getModel();
+        modelo.setRowCount(0);
+
+        List<Mantenimiento> mantenimientos = MantenimientoDAO.listarMantenimiento();
+
+        for (Mantenimiento mantenimiento : mantenimientos)
+        {
+            Object[] fila =
+            {
+                mantenimiento.getId_mantenimiento(),
+                mantenimiento.getDescripccion(),
+                mantenimiento.getFecha(),
+                mantenimiento.getId_vehiculo(),
+                mantenimiento.getId_empleado()
+            };
+            modelo.addRow(fila);
+        }
+    }
 
     public void llenarComboEmpleados(JComboBox<String> comboEmpleados)
     {
@@ -355,8 +626,8 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton limpiar;
     private javax.swing.JButton modificar;
+    private javax.swing.JTable tablaMantenimientos;
     // End of variables declaration//GEN-END:variables
 }
