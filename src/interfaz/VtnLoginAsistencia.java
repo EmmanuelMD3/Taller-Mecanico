@@ -5,15 +5,22 @@
 package interfaz;
 
 import cjb.ci.CtrlInterfaz;
+import dao.AsistenciaDAO;
+import dao.EmpleadoDAO;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import javax.swing.JOptionPane;
+import modelo.Asistencia;
 
 /**
  *
  * @author chemo
  */
-public class VtnLoginAdministrador extends javax.swing.JDialog
+public class VtnLoginAsistencia extends javax.swing.JDialog
 {
 
     private boolean acceso = false;
@@ -21,19 +28,19 @@ public class VtnLoginAdministrador extends javax.swing.JDialog
     /**
      * Creates new form VtnLoginAdministrador
      */
-    public VtnLoginAdministrador(java.awt.Frame parent, boolean modal)
+    public VtnLoginAsistencia(java.awt.Frame parent, boolean modal)
     {
         super(parent, modal);
         initComponents();
         setIconImage(getIconImage());
+        
     }
-    
-     public Image getIconImage()
+
+    public Image getIconImage()
     {
         Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("imagenes/Logo.png"));
         return retValue;
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -49,7 +56,7 @@ public class VtnLoginAdministrador extends javax.swing.JDialog
         jButton2 = new javax.swing.JButton();
         contraseñaTF = new javax.swing.JPasswordField();
         jLabel2 = new javax.swing.JLabel();
-        usuarioTF = new javax.swing.JTextField();
+        correoJT = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         mostrarCheckBox = new javax.swing.JCheckBox();
 
@@ -93,11 +100,11 @@ public class VtnLoginAdministrador extends javax.swing.JDialog
         jLabel2.setText("CONTRASEÑA:");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 130, -1));
 
-        usuarioTF.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jPanel1.add(usuarioTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 340, -1));
+        correoJT.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jPanel1.add(correoJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 340, -1));
 
         jLabel1.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        jLabel1.setText("USUARIO:");
+        jLabel1.setText("CORREO:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, -1, -1));
 
         mostrarCheckBox.setBackground(new java.awt.Color(255, 255, 255));
@@ -121,19 +128,45 @@ public class VtnLoginAdministrador extends javax.swing.JDialog
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
     {//GEN-HEADEREND:event_jButton1ActionPerformed
-        String usua = usuarioTF.getText();
-        String contra = new String(contraseñaTF.getPassword());
+        String correo = correoJT.getText().trim();
+        String contra = contraseñaTF.getText().trim();
 
-        if (usua.equals("Admin") && contra.equals("1234"))
+        if (correo.isEmpty() || contra.isEmpty())
         {
-            acceso = true;
-            JOptionPane.showMessageDialog(this, "Acceso concedido", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
+            JOptionPane.showMessageDialog(this, "Por favor ingresa correo y contraseña.", "Campos vacíos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+        AsistenciaDAO asistenciaDAO = new AsistenciaDAO();
+
+        int idEmpleado = empleadoDAO.validarCredenciales(correo, contra);
+
+        if (idEmpleado != -1)
+        {
+
+            LocalDateTime ahora = LocalDateTime.now();
+            Date fechaActual = Date.from(ahora.atZone(ZoneId.systemDefault()).toInstant());
+
+            Asistencia nuevaAsistencia = new Asistencia(0, idEmpleado, fechaActual);
+            boolean registrada = asistenciaDAO.insertarAsistencia(nuevaAsistencia);
+
+            if (registrada)
+            {
+                SimpleDateFormat formato = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+                String fechaFormateada = formato.format(fechaActual);
+
+                JOptionPane.showMessageDialog(this, "Asistencia registrada a las: " + fechaFormateada, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+            } else
+            {
+                JOptionPane.showMessageDialog(this, "Error al registrar asistencia.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
         } else
         {
-            JOptionPane.showMessageDialog(this, "Error credenciales invalidas", "Error", JOptionPane.ERROR_MESSAGE);
-            CtrlInterfaz.limpia(usuarioTF, contraseñaTF);
-            acceso = false;
+            JOptionPane.showMessageDialog(this, "Credenciales inválidas", "Error", JOptionPane.ERROR_MESSAGE);
+            CtrlInterfaz.limpia(correoJT, contraseñaTF);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -149,7 +182,7 @@ public class VtnLoginAdministrador extends javax.swing.JDialog
             contraseñaTF.setEchoChar((char) 0);
         } else
         {
-            contraseñaTF.setEchoChar('*'); 
+            contraseñaTF.setEchoChar('*');
         }
     }//GEN-LAST:event_mostrarCheckBoxActionPerformed
 
@@ -180,17 +213,20 @@ public class VtnLoginAdministrador extends javax.swing.JDialog
             }
         } catch (ClassNotFoundException ex)
         {
-            java.util.logging.Logger.getLogger(VtnLoginAdministrador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VtnLoginAsistencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex)
         {
-            java.util.logging.Logger.getLogger(VtnLoginAdministrador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VtnLoginAsistencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex)
         {
-            java.util.logging.Logger.getLogger(VtnLoginAdministrador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VtnLoginAsistencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex)
         {
-            java.util.logging.Logger.getLogger(VtnLoginAdministrador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VtnLoginAsistencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
@@ -198,7 +234,7 @@ public class VtnLoginAdministrador extends javax.swing.JDialog
         {
             public void run()
             {
-                VtnLoginAdministrador dialog = new VtnLoginAdministrador(new javax.swing.JFrame(), true);
+                VtnLoginAsistencia dialog = new VtnLoginAsistencia(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter()
                 {
                     @Override
@@ -214,12 +250,12 @@ public class VtnLoginAdministrador extends javax.swing.JDialog
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPasswordField contraseñaTF;
+    private javax.swing.JTextField correoJT;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JCheckBox mostrarCheckBox;
-    private javax.swing.JTextField usuarioTF;
     // End of variables declaration//GEN-END:variables
 }

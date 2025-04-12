@@ -4,7 +4,10 @@
  */
 package interfaz;
 
+import cjb.ci.CtrlInterfaz;
 import java.awt.BorderLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import modelo.Vehiculo;
 
@@ -21,6 +24,16 @@ public class VtnPrincipal extends javax.swing.JFrame
     public VtnPrincipal()
     {
         initComponents();
+        setIconImage(getIconImage());
+        empleado.setEnabled(false);
+        asistencia.setEnabled(false);
+
+    }
+    
+    public Image getIconImage()
+    {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("imagenes/Logo.png"));
+        return retValue;
     }
 
     /**
@@ -39,9 +52,20 @@ public class VtnPrincipal extends javax.swing.JFrame
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
+        administrador = new javax.swing.JMenu();
+        login = new javax.swing.JMenu();
+        empleado = new javax.swing.JMenu();
+        asistencia = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Taller Mecanico Autofix");
+        addWindowListener(new java.awt.event.WindowAdapter()
+        {
+            public void windowOpened(java.awt.event.WindowEvent evt)
+            {
+                formWindowOpened(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         panelControl.setBackground(new java.awt.Color(255, 255, 255));
@@ -100,11 +124,10 @@ public class VtnPrincipal extends javax.swing.JFrame
         });
         jMenuBar1.add(jMenu3);
 
-        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/alquiler.png"))); // NOI18N
-        jMenu4.setText("Empleados");
+        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/marca.png"))); // NOI18N
+        jMenu4.setText("Asistencia");
         jMenu4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jMenu4.setFocusable(false);
-        jMenu4.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jMenu4.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jMenu4.addMouseListener(new java.awt.event.MouseAdapter()
         {
             public void mouseClicked(java.awt.event.MouseEvent evt)
@@ -113,6 +136,67 @@ public class VtnPrincipal extends javax.swing.JFrame
             }
         });
         jMenuBar1.add(jMenu4);
+
+        administrador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/alquiler.png"))); // NOI18N
+        administrador.setText("Administrador");
+        administrador.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        administrador.setFocusable(false);
+        administrador.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        administrador.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                administradorMouseClicked(evt);
+            }
+        });
+
+        login.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/datos-del-usuario.png"))); // NOI18N
+        login.setText("Iniciar Sesion");
+        login.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        login.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        login.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                loginMouseClicked(evt);
+            }
+        });
+        administrador.add(login);
+
+        empleado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/empleado-de-oficina.png"))); // NOI18N
+        empleado.setText("Empleados");
+        empleado.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        empleado.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        empleado.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                empleadoMouseClicked(evt);
+            }
+        });
+        empleado.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                empleadoActionPerformed(evt);
+            }
+        });
+        administrador.add(empleado);
+
+        asistencia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lista-de-verificacion.png"))); // NOI18N
+        asistencia.setText("Asistencia");
+        asistencia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        asistencia.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        asistencia.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                asistenciaMouseClicked(evt);
+            }
+        });
+        administrador.add(asistencia);
+
+        jMenuBar1.add(administrador);
 
         setJMenuBar(jMenuBar1);
 
@@ -141,21 +225,69 @@ public class VtnPrincipal extends javax.swing.JFrame
         panelControl.add(mantenimientos).setVisible(true);
     }//GEN-LAST:event_jMenu3MouseClicked
 
-    private void jMenu4MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jMenu4MouseClicked
-    {//GEN-HEADEREND:event_jMenu4MouseClicked
-        VtnLoginAdministrador login = new VtnLoginAdministrador(this, true); // this = JFrame padre, true = modal
-        login.setVisible(true); // Pausa aquí hasta que el usuario cierre el login
+    private void administradorMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_administradorMouseClicked
+    {//GEN-HEADEREND:event_administradorMouseClicked
+
+    }//GEN-LAST:event_administradorMouseClicked
+
+    private void empleadoMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_empleadoMouseClicked
+    {//GEN-HEADEREND:event_empleadoMouseClicked
+        boolean activo = empleado.isEnabled();
+        
+        if (activo)
+        {
+            panelControl.removeAll();
+            CtrlInterfaz.habilita(true, empleado, asistencia);
+            VtnEmpleados empleados = new VtnEmpleados();
+            panelControl.add(empleados).setVisible(true);
+        }else
+        {
+            JOptionPane.showMessageDialog(this, "Inicie sesion como administrador", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_empleadoMouseClicked
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt)//GEN-FIRST:event_formWindowOpened
+    {//GEN-HEADEREND:event_formWindowOpened
+        CtrlInterfaz.habilita(false, empleado, asistencia);
+    }//GEN-LAST:event_formWindowOpened
+
+    private void loginMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_loginMouseClicked
+    {//GEN-HEADEREND:event_loginMouseClicked
+        VtnLoginAdministrador login = new VtnLoginAdministrador(this, true);
+        login.setVisible(true);
 
         if (login.isAcceso())
         {
             panelControl.removeAll();
-            VtnEmpleados empleados = new VtnEmpleados();
-            panelControl.add(empleados).setVisible(true);
+            empleado.setEnabled(true);
+            asistencia.setEnabled(true);
+
         } else
         {
             System.out.println("Acceso denegado");
         }
+    }//GEN-LAST:event_loginMouseClicked
+
+    private void empleadoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_empleadoActionPerformed
+    {//GEN-HEADEREND:event_empleadoActionPerformed
+        panelControl.removeAll();
+        CtrlInterfaz.habilita(true, empleado, asistencia);
+        VtnEmpleados empleados = new VtnEmpleados();
+        panelControl.add(empleados).setVisible(true);
+    }//GEN-LAST:event_empleadoActionPerformed
+
+    private void jMenu4MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jMenu4MouseClicked
+    {//GEN-HEADEREND:event_jMenu4MouseClicked
+        VtnLoginAsistencia asistencia = new VtnLoginAsistencia(this, true);
+        asistencia.setVisible(true);
     }//GEN-LAST:event_jMenu4MouseClicked
+
+    private void asistenciaMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_asistenciaMouseClicked
+    {//GEN-HEADEREND:event_asistenciaMouseClicked
+        panelControl.removeAll();
+        VtnAsistencias asistencia = new VtnAsistencias();
+        panelControl.add(asistencia).setVisible(true);
+    }//GEN-LAST:event_asistenciaMouseClicked
 
     /**
      * @param args the command line arguments
@@ -203,11 +335,15 @@ public class VtnPrincipal extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu administrador;
+    private javax.swing.JMenu asistencia;
+    private javax.swing.JMenu empleado;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu login;
     private javax.swing.JDesktopPane panelControl;
     // End of variables declaration//GEN-END:variables
 }

@@ -177,6 +177,30 @@ public class EmpleadoDAO
         return null;
     }
 
- 
+    public int validarCredenciales(String correo, String contrasena)
+    {
+        String sql = "SELECT id_empleado FROM Empleado WHERE correo = ? AND contrasena = ?";
 
+        try (Connection con = Conexion.conectar(); PreparedStatement ps = con.prepareStatement(sql))
+        {
+            ps.setString(1, correo);
+            ps.setString(2, contrasena);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next())
+            {
+                return rs.getInt("id_empleado"); // Retorna el ID si encontró coincidencia
+            } else
+            {
+                return -1; // Credenciales incorrectas
+            }
+
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return -1; // Error en la conexión o consulta
+        }
+    }
 }
+

@@ -532,9 +532,7 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         modeloTabla.setRowCount(0);
 
         MantenimientoDAO mantenimientoDAO = new MantenimientoDAO();
-        VehiculoDAO vehiculoDAO = new VehiculoDAO();
 
-        List<Vehiculo> vehiculos = vehiculoDAO.listarVehiculos();
         List<Mantenimiento> mantenimientos = mantenimientoDAO.listarMantenimientoFiltro();
 
         for (Mantenimiento mantenimiento : mantenimientos)

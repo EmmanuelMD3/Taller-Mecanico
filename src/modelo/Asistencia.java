@@ -15,18 +15,16 @@ public class Asistencia
     private int id_registro;
     private int id_empleado;
     private Date fehca_entrada;
-    private Date fecha_salida;
 
     public Asistencia()
     {
     }
 
-    public Asistencia(int id_registro, int id_empleado, Date fehca_entrada, Date fecha_salida)
+    public Asistencia(int id_registro, int id_empleado, Date fehca_entrada)
     {
         this.id_registro = id_registro;
         this.id_empleado = id_empleado;
         this.fehca_entrada = fehca_entrada;
-        this.fecha_salida = fecha_salida;
     }
 
     /**
@@ -76,22 +74,4 @@ public class Asistencia
     {
         this.fehca_entrada = fehca_entrada;
     }
-
-    /**
-     * @return the fecha_salida
-     */
-    public Date getFecha_salida()
-    {
-        return fecha_salida;
-    }
-
-    /**
-     * @param fecha_salida the fecha_salida to set
-     */
-    public void setFecha_salida(Date fecha_salida)
-    {
-        this.fecha_salida = fecha_salida;
-    }
-    
-    
 }
