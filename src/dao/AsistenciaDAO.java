@@ -6,7 +6,6 @@ package dao;
 
 import conexion.Conexion;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -57,7 +56,7 @@ public class AsistenciaDAO
                 Asistencia asistencia = new Asistencia();
                 asistencia.setId_registro(rs.getInt("id_registro"));
                 asistencia.setId_empleado(rs.getInt("id_empleado"));
-                asistencia.setFehca_entrada(rs.getTimestamp("fecha_entrada")); // Timestamp se puede castear a Date
+                asistencia.setFehca_entrada(rs.getTimestamp("fecha_entrada")); 
                 lista.add(asistencia);
             }
 

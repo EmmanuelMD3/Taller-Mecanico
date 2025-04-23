@@ -27,9 +27,10 @@ public class VtnPrincipal extends javax.swing.JFrame
         setIconImage(getIconImage());
         empleado.setEnabled(false);
         asistencia.setEnabled(false);
+        cerrar_sesion.setEnabled(false);
 
     }
-    
+
     public Image getIconImage()
     {
         Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("imagenes/Logo.png"));
@@ -56,6 +57,7 @@ public class VtnPrincipal extends javax.swing.JFrame
         login = new javax.swing.JMenu();
         empleado = new javax.swing.JMenu();
         asistencia = new javax.swing.JMenu();
+        cerrar_sesion = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Taller Mecanico Autofix");
@@ -196,6 +198,18 @@ public class VtnPrincipal extends javax.swing.JFrame
         });
         administrador.add(asistencia);
 
+        cerrar_sesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cerrar-sesion.png"))); // NOI18N
+        cerrar_sesion.setText("Cerrar Sesion");
+        cerrar_sesion.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        cerrar_sesion.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                cerrar_sesionMouseClicked(evt);
+            }
+        });
+        administrador.add(cerrar_sesion);
+
         jMenuBar1.add(administrador);
 
         setJMenuBar(jMenuBar1);
@@ -233,14 +247,14 @@ public class VtnPrincipal extends javax.swing.JFrame
     private void empleadoMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_empleadoMouseClicked
     {//GEN-HEADEREND:event_empleadoMouseClicked
         boolean activo = empleado.isEnabled();
-        
+
         if (activo)
         {
             panelControl.removeAll();
-            CtrlInterfaz.habilita(true, empleado, asistencia);
+            //CtrlInterfaz.habilita(true, empleado, asistencia);
             VtnEmpleados empleados = new VtnEmpleados();
             panelControl.add(empleados).setVisible(true);
-        }else
+        } else
         {
             JOptionPane.showMessageDialog(this, "Inicie sesion como administrador", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -261,6 +275,7 @@ public class VtnPrincipal extends javax.swing.JFrame
             panelControl.removeAll();
             empleado.setEnabled(true);
             asistencia.setEnabled(true);
+            cerrar_sesion.setEnabled(true);
 
         } else
         {
@@ -284,10 +299,39 @@ public class VtnPrincipal extends javax.swing.JFrame
 
     private void asistenciaMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_asistenciaMouseClicked
     {//GEN-HEADEREND:event_asistenciaMouseClicked
-        panelControl.removeAll();
-        VtnAsistencias asistencia = new VtnAsistencias();
-        panelControl.add(asistencia).setVisible(true);
+        boolean activo = asistencia.isEnabled();
+        if (activo)
+        {
+            panelControl.removeAll();
+            VtnAsistencias asistencia = new VtnAsistencias();
+            panelControl.add(asistencia).setVisible(true);
+        } else
+        {
+            JOptionPane.showMessageDialog(this, "Inicie sesion como administrador", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+
     }//GEN-LAST:event_asistenciaMouseClicked
+
+    private void cerrar_sesionMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_cerrar_sesionMouseClicked
+    {//GEN-HEADEREND:event_cerrar_sesionMouseClicked
+        boolean activo = cerrar_sesion.isEnabled();
+
+        if (activo)
+        {
+            panelControl.removeAll();
+            panelControl.repaint();
+            panelControl.revalidate();
+            empleado.setEnabled(false);
+            asistencia.setEnabled(false);
+            cerrar_sesion.setEnabled(false);
+            JOptionPane.showMessageDialog(this, "Sesion Cerrada", "Exito", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Inicie Sesion", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_cerrar_sesionMouseClicked
 
     /**
      * @param args the command line arguments
@@ -337,6 +381,7 @@ public class VtnPrincipal extends javax.swing.JFrame
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu administrador;
     private javax.swing.JMenu asistencia;
+    private javax.swing.JMenu cerrar_sesion;
     private javax.swing.JMenu empleado;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;

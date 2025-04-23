@@ -572,6 +572,18 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
             modelo.addRow(fila);
         }
     }
+//    private void llenarTablaMantenimientos()
+//    {
+//        DefaultTableModel modelo = (DefaultTableModel) tablaMantenimientos.getModel();
+//        modelo.setRowCount(0);
+//
+//        List<Object[]> mantenimientos = MantenimientoDAO.listarMantenimiento1();
+//
+//        for (Object[] fila : mantenimientos)
+//        {
+//            modelo.addRow(fila);
+//        }
+//    }
 
     public void llenarComboEmpleados(JComboBox<String> comboEmpleados)
     {

@@ -68,7 +68,7 @@ public class MantenimientoDAO
         }
         return mantenimientos;
     }
-    
+
     public List<Mantenimiento> listarMantenimientoFiltro()
     {
         List<Mantenimiento> mantenimientos = new ArrayList<>();
@@ -139,4 +139,41 @@ public class MantenimientoDAO
             return false;
         }
     }
+
+    public static List<Object[]> listarMantenimiento1()
+    {
+        List<Object[]> lista = new ArrayList<>();
+
+        String sql = """
+        SELECT m.id_mantenimiento, m.descripcion, m.fecha,
+               v.placa AS placa_vehiculo,
+               e.nombre AS nombre_empleado
+        FROM Mantenimiento m
+        JOIN Vehiculo v ON m.id_vehiculo = v.id_vehiculo
+        JOIN Empleado e ON m.id_empleado = e.id_empleado
+    """;
+
+        try (Connection conn = Conexion.conectar(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql))
+        {
+            while (rs.next())
+            {
+                Object[] fila =
+                {
+                    rs.getInt("id_mantenimiento"),
+                    rs.getString("descripcion"),
+                    rs.getDate("fecha"),
+                    rs.getString("placa_vehiculo"),
+                    rs.getString("nombre_empleado")
+
+                };
+                lista.add(fila);
+            }
+        } catch (SQLException e)
+        {
+            System.err.println("Error al listar los mantenimientos: " + e.getMessage());
+        }
+
+        return lista;
+    }
+
 }
