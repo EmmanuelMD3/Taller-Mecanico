@@ -6,11 +6,17 @@ package interfaz;
 
 import cjb.ci.CtrlInterfaz;
 import dao.EmpleadoDAO;
+import dao.ExportarCSV;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import modelo.Empleado;
+
+
 
 /**
  *
@@ -27,7 +33,7 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
         initComponents();
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        
+
         buscar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener()
         {
             @Override
@@ -81,11 +87,11 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
         jLabel8 = new javax.swing.JLabel();
         contrasenaJT = new javax.swing.JPasswordField();
         mostrarCheckBox = new javax.swing.JCheckBox();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         setMinimumSize(new java.awt.Dimension(46, 3));
-        setNormalBounds(new java.awt.Rectangle(0, 0, 0, 0));
         setPreferredSize(new java.awt.Dimension(1150, 520));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener()
         {
@@ -165,7 +171,7 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
                 buscarActionPerformed(evt);
             }
         });
-        getContentPane().add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 560, -1));
+        getContentPane().add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 480, -1));
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda-de-lupa.png"))); // NOI18N
@@ -188,7 +194,7 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
                 jLabel6MouseEntered(evt);
             }
         });
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, -1, 40));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, -1, 40));
 
         jLabel3.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel3.setText("INFORMACION");
@@ -289,6 +295,19 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
         });
         getContentPane().add(mostrarCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 390, -1, -1));
 
+        jButton1.setBackground(new java.awt.Color(51, 153, 255));
+        jButton1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("EXPORTAR DATOS");
+        jButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 50, 150, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -341,7 +360,7 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
         if (confirmacion == JOptionPane.YES_OPTION)
         {
             DefaultTableModel modeloTabla = (DefaultTableModel) tablaEmpleado.getModel();
-            Object valorCelda = tablaEmpleado.getValueAt(filaSeleccionada, 0); 
+            Object valorCelda = tablaEmpleado.getValueAt(filaSeleccionada, 0);
 
             long idEmpleado;
             try
@@ -451,7 +470,7 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
             return;
         }
 
-        Empleado empleado = new Empleado(idEmpleado, nombre, apellido, correo, contra); 
+        Empleado empleado = new Empleado(idEmpleado, nombre, apellido, correo, contra);
 
         EmpleadoDAO empleadoDAO = new EmpleadoDAO();
         boolean exito = empleadoDAO.actualizarEmpleado(empleado);
@@ -502,6 +521,32 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel6MouseEntered
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
+    {//GEN-HEADEREND:event_jButton1ActionPerformed
+        ExportarCSV exportarCSV = new ExportarCSV();
+
+        String query = "SELECT * FROM empleado"; 
+
+        String ruta = System.getProperty("user.home") + "/Downloads/empleados_export.csv";
+
+        boolean exito = false;
+        try
+        {
+            exito = exportarCSV.exportarACSV(query, ruta);
+        } catch (IOException ex)
+        {
+            Logger.getLogger(VtnEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (exito)
+        {
+            JOptionPane.showMessageDialog(null, "✅ Exportación completada: " + ruta, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else
+        {
+            JOptionPane.showMessageDialog(null, "Error al exportar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void llenarTablaEmpleados()
     {
         DefaultTableModel modelo = (DefaultTableModel) tablaEmpleado.getModel();
@@ -521,7 +566,7 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
             modelo.addRow(fila);
         }
     }
-    
+
     public void filtrarEmpleados()
     {
         String textoBusqueda = buscar.getText().trim().toLowerCase();
@@ -556,6 +601,7 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
     private javax.swing.JTextField buscar;
     private javax.swing.JPasswordField contrasenaJT;
     private javax.swing.JTextField correoJT;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

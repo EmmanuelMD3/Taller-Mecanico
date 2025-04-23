@@ -5,6 +5,7 @@
 package interfaz;
 
 import dao.AsistenciaDAO;
+import dao.ExportarCSV;
 import java.awt.Color;
 import java.awt.Component;
 import java.text.SimpleDateFormat;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -48,6 +50,7 @@ public class VtnAsistencias extends javax.swing.JInternalFrame
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaAsistencias = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener()
@@ -107,6 +110,19 @@ public class VtnAsistencias extends javax.swing.JInternalFrame
         jLabel1.setText("ASISTENCIA");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 10, -1, 30));
 
+        jButton4.setBackground(new java.awt.Color(51, 153, 255));
+        jButton4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
+        jButton4.setText("EXPORTAR DATOS");
+        jButton4.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 150, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -115,10 +131,28 @@ public class VtnAsistencias extends javax.swing.JInternalFrame
         llenarTablaAsistencias();
     }//GEN-LAST:event_formInternalFrameOpened
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton4ActionPerformed
+    {//GEN-HEADEREND:event_jButton4ActionPerformed
+        ExportarCSV exportarCSV = new ExportarCSV();
+
+        String query = "SELECT * FROM Asistencia"; 
+
+        String ruta = System.getProperty("user.home") + "/Downloads/asistencias_export.csv"; 
+        boolean exito = exportarCSV.exportarAsistenciasACSV(query, ruta);
+
+        if (exito)
+        {
+            JOptionPane.showMessageDialog(null, "✅ Exportación completada: " + ruta, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else
+        {
+            JOptionPane.showMessageDialog(null, "Error al exportar las asistencias.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     private void llenarTablaAsistencias()
     {
         DefaultTableModel modelo = (DefaultTableModel) tablaAsistencias.getModel();
-        modelo.setRowCount(0); 
+        modelo.setRowCount(0);
         AsistenciaDAO asistenciaDAO = new AsistenciaDAO();
         List<Object[]> asistencias = asistenciaDAO.listarAsistenciasConNombre();
 
@@ -143,7 +177,7 @@ public class VtnAsistencias extends javax.swing.JInternalFrame
             });
         }
 
-        aplicarColoresEstado(); 
+        aplicarColoresEstado();
     }
 
     private void aplicarColoresEstado()
@@ -159,7 +193,7 @@ public class VtnAsistencias extends javax.swing.JInternalFrame
 
                 if ("Temprano".equals(value))
                 {
-                    c.setForeground(new Color(0, 128, 0)); 
+                    c.setForeground(new Color(0, 128, 0));
                 } else if ("Tarde".equals(value))
                 {
                     c.setForeground(Color.RED);
@@ -173,6 +207,7 @@ public class VtnAsistencias extends javax.swing.JInternalFrame
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaAsistencias;

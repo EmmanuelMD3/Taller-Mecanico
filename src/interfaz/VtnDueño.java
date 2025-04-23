@@ -5,6 +5,7 @@
 package interfaz;
 
 import cjb.ci.CtrlInterfaz;
+import dao.ExportarCSV;
 import dao.PropietarioDAO;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -73,6 +74,7 @@ public class VtnDueño extends javax.swing.JInternalFrame
         jLabel6 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -155,7 +157,7 @@ public class VtnDueño extends javax.swing.JInternalFrame
                 buscarActionPerformed(evt);
             }
         });
-        getContentPane().add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 560, -1));
+        getContentPane().add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 480, -1));
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda-de-lupa.png"))); // NOI18N
@@ -213,7 +215,7 @@ public class VtnDueño extends javax.swing.JInternalFrame
                 jLabel6MouseClicked(evt);
             }
         });
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, -1, 40));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, -1, 40));
 
         jButton2.setBackground(new java.awt.Color(102, 255, 102));
         jButton2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -242,6 +244,19 @@ public class VtnDueño extends javax.swing.JInternalFrame
             }
         });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 460, 110, 30));
+
+        jButton4.setBackground(new java.awt.Color(51, 153, 255));
+        jButton4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
+        jButton4.setText("EXPORTAR DATOS");
+        jButton4.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 50, 150, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -295,7 +310,7 @@ public class VtnDueño extends javax.swing.JInternalFrame
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton3ActionPerformed
     {//GEN-HEADEREND:event_jButton3ActionPerformed
-        CtrlInterfaz.limpia(nombre,telefono);
+        CtrlInterfaz.limpia(nombre, telefono);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt)//GEN-FIRST:event_formInternalFrameOpened
@@ -405,6 +420,25 @@ public class VtnDueño extends javax.swing.JInternalFrame
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton4ActionPerformed
+    {//GEN-HEADEREND:event_jButton4ActionPerformed
+        ExportarCSV exportarCSV = new ExportarCSV();
+
+        String query = "SELECT * FROM Propietario"; 
+
+        String ruta = System.getProperty("user.home") + "/Downloads/propietarios_export.csv"; 
+
+        boolean exito = exportarCSV.exportarPropietariosACSV(query, ruta);
+
+        if (exito)
+        {
+            JOptionPane.showMessageDialog(null, "✅ Exportación completada: " + ruta, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else
+        {
+            JOptionPane.showMessageDialog(null, "Error al exportar los propietarios.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     private void llenarTablaPropietarios()
     {
         DefaultTableModel modelo = (DefaultTableModel) tablaPropietario.getModel();
@@ -455,6 +489,7 @@ public class VtnDueño extends javax.swing.JInternalFrame
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

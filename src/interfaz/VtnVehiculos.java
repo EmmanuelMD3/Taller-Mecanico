@@ -5,6 +5,7 @@
 package interfaz;
 
 import cjb.ci.CtrlInterfaz;
+import dao.ExportarCSV;
 import dao.PropietarioDAO;
 import dao.VehiculoDAO;
 import java.awt.BorderLayout;
@@ -97,6 +98,7 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         anioCB = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         modificar = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         txtRutaImagen.setText("jTextField1");
 
@@ -181,7 +183,7 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
                 buscarActionPerformed(evt);
             }
         });
-        getContentPane().add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 560, -1));
+        getContentPane().add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 490, -1));
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda-de-lupa.png"))); // NOI18N
@@ -237,7 +239,7 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
                 jLabel6MouseClicked(evt);
             }
         });
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, -1, 40));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, -1, 40));
 
         alta.setBackground(new java.awt.Color(102, 255, 102));
         alta.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -314,6 +316,19 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
             }
         });
         getContentPane().add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 460, -1, 30));
+
+        jButton4.setBackground(new java.awt.Color(51, 153, 255));
+        jButton4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
+        jButton4.setText("EXPORTAR DATOS");
+        jButton4.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 50, 150, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -592,7 +607,7 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
                 return;
             }
 
-            String rutaImagen = txtRutaImagen.getText();  
+            String rutaImagen = txtRutaImagen.getText();
 
             Object valorCelda = modeloTabla.getValueAt(filaSeleccionada, 0);
             int codigo;
@@ -612,7 +627,7 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
             vehiculoActualizado.setModelo(nuevoModelo);
             vehiculoActualizado.setAño(nuevoAnio);
             vehiculoActualizado.setId_propietario(nuevoDueño);
-            vehiculoActualizado.setRutaImagen(rutaImagen);  
+            vehiculoActualizado.setRutaImagen(rutaImagen);
 
             boolean exito = vehiculoDAO.modificarVehiculo(vehiculoActualizado);
             if (exito)
@@ -628,6 +643,25 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
             JOptionPane.showMessageDialog(this, "Error al parsear el año. Asegúrese de que sea un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_modificarActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton4ActionPerformed
+    {//GEN-HEADEREND:event_jButton4ActionPerformed
+        ExportarCSV exportarCSV = new ExportarCSV();
+
+        String query = "SELECT * FROM Vehiculo"; 
+
+        String ruta = System.getProperty("user.home") + "/Downloads/vehiculos_export.csv"; 
+
+        boolean exito = exportarCSV.exportarVehiculosACSV(query, ruta);
+
+        if (exito)
+        {
+            JOptionPane.showMessageDialog(null, "✅ Exportación completada: " + ruta, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else
+        {
+            JOptionPane.showMessageDialog(null, "Error al exportar los vehículos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
     public void filtrarVehiculos()
     {
         String textoBusqueda = buscar.getText().trim().toLowerCase();
@@ -734,12 +768,13 @@ public class VtnVehiculos extends javax.swing.JInternalFrame
         }
         comboPropietarios.setModel(modelo);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton alta;
     private javax.swing.JComboBox<String> anioCB;
     private javax.swing.JTextField buscar;
     private javax.swing.JPanel imagenPanel;
+    private javax.swing.JButton jButton4;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

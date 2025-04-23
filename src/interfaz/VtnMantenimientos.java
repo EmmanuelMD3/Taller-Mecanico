@@ -18,6 +18,7 @@ import modelo.Empleado;
 import modelo.Mantenimiento;
 import modelo.Vehiculo;
 import cjb.ci.CtrlInterfaz;
+import dao.ExportarCSV;
 
 /**
  *
@@ -96,6 +97,7 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         comboVehiculos = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         comboEmpleados = new javax.swing.JComboBox<>();
+        jButton4 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -178,7 +180,7 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
                 buscarActionPerformed(evt);
             }
         });
-        getContentPane().add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 560, -1));
+        getContentPane().add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 490, -1));
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda-de-lupa.png"))); // NOI18N
@@ -219,7 +221,7 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
                 jLabel6MouseClicked(evt);
             }
         });
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, -1, 40));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, -1, 40));
 
         alta.setBackground(new java.awt.Color(102, 255, 102));
         alta.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -281,6 +283,19 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         comboEmpleados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         comboEmpleados.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         getContentPane().add(comboEmpleados, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 330, 170, -1));
+
+        jButton4.setBackground(new java.awt.Color(51, 153, 255));
+        jButton4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
+        jButton4.setText("EXPORTAR DATOS");
+        jButton4.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 50, 150, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -524,6 +539,25 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         }
     }//GEN-LAST:event_modificarActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton4ActionPerformed
+    {//GEN-HEADEREND:event_jButton4ActionPerformed
+        ExportarCSV exportarCSV = new ExportarCSV();
+
+        String query = "SELECT * FROM Mantenimiento"; 
+
+        String ruta = System.getProperty("user.home") + "/Downloads/mantenimientos_export.csv"; 
+       
+        boolean exito = exportarCSV.exportarMantenimientosACSV(query, ruta);
+
+        if (exito)
+        {
+            JOptionPane.showMessageDialog(null, "✅ Exportación completada: " + ruta, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else
+        {
+            JOptionPane.showMessageDialog(null, "Error al exportar los mantenimientos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     public void filtrarMantenimiento()
     {
         String textoBusqueda = buscar.getText().trim().toLowerCase();
@@ -626,6 +660,7 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
     private javax.swing.JComboBox<String> comboEmpleados;
     private javax.swing.JComboBox<String> comboVehiculos;
     private javax.swing.JTextArea descripccionJT;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
