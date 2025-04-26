@@ -21,25 +21,32 @@ import modelo.Mantenimiento;
 public class MantenimientoDAO
 {
 
-    public boolean insertarMantenimiento(Mantenimiento mantenimiento)
+    public int insertarMantenimiento(Mantenimiento mantenimiento)
     {
-        String sql = "INSERT INTO Mantenimiento (descripcion, fecha, id_vehiculo, id_empleado) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Mantenimiento (descripcion, fecha, id_vehiculo, id_empleado, costo_mano_obra, total_mantenimiento) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = Conexion.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql))
+        try (Connection conn = Conexion.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
         {
+
             pstmt.setString(1, mantenimiento.getDescripccion());
             pstmt.setDate(2, new java.sql.Date(mantenimiento.getFecha().getTime()));
             pstmt.setInt(3, mantenimiento.getId_vehiculo());
             pstmt.setInt(4, mantenimiento.getId_empleado());
+            pstmt.setDouble(5, mantenimiento.getCostoManoObra());
+            pstmt.setDouble(6, mantenimiento.getTotal());
 
-            int filasInsertadas = pstmt.executeUpdate();
-            return filasInsertadas > 0;
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if (rs.next())
+            {
+                return rs.getInt(1);
+            }
         } catch (SQLException e)
         {
-            System.out.println("Error al insertar el mantenimiento.");
             e.printStackTrace();
-            return false;
         }
+
+        return -1;
     }
 
     public static List<Mantenimiento> listarMantenimiento()
@@ -57,15 +64,18 @@ public class MantenimientoDAO
                         rs.getString("descripcion"),
                         rs.getDate("fecha"),
                         rs.getInt("id_vehiculo"),
-                        rs.getInt("id_empleado")
+                        rs.getInt("id_empleado"),
+                        rs.getDouble("costo_mano_obra"), 
+                        rs.getDouble("total_mantenimiento") 
                 );
                 mantenimientos.add(mantenimiento);
             }
 
         } catch (SQLException e)
         {
-            System.err.println("Error al listar los mantenientos: " + e.getMessage());
+            System.err.println("Error al listar los mantenimientos: " + e.getMessage());
         }
+
         return mantenimientos;
     }
 
@@ -84,7 +94,9 @@ public class MantenimientoDAO
                         rs.getString("descripcion"),
                         rs.getDate("fecha"),
                         rs.getInt("id_vehiculo"),
-                        rs.getInt("id_empleado")
+                        rs.getInt("id_empleado"),
+                        rs.getDouble("costo_mano_obra"), 
+                        rs.getDouble("total_mantenimiento") 
                 );
                 mantenimientos.add(mantenimiento);
             }
@@ -120,7 +132,7 @@ public class MantenimientoDAO
 
     public boolean modificarMantenimiento(Mantenimiento mantenimiento)
     {
-        String sql = "UPDATE Mantenimiento SET descripcion = ?, fecha = ?, id_vehiculo = ?, id_empleado = ? WHERE id_mantenimiento = ?";
+        String sql = "UPDATE mantenimiento SET descripcion = ?, fecha = ?, id_vehiculo = ?, id_empleado = ?, costo_mano_obra = ?, total_mantenimiento = ? WHERE id_mantenimiento = ?";
 
         try (Connection conn = Conexion.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql))
         {
@@ -129,13 +141,16 @@ public class MantenimientoDAO
             pstmt.setDate(2, new java.sql.Date(mantenimiento.getFecha().getTime()));
             pstmt.setInt(3, mantenimiento.getId_vehiculo());
             pstmt.setInt(4, mantenimiento.getId_empleado());
-            pstmt.setInt(5, mantenimiento.getId_mantenimiento());
+            pstmt.setDouble(5, mantenimiento.getCostoManoObra());        
+            pstmt.setDouble(6, mantenimiento.getTotal());                
+            pstmt.setInt(7, mantenimiento.getId_mantenimiento());
 
             int filasActualizadas = pstmt.executeUpdate();
             return filasActualizadas > 0;
+
         } catch (SQLException e)
         {
-            System.out.println("Error al modificar el mantenmiento" + e.toString());
+            System.out.println("Error al modificar el mantenimiento: " + e.getMessage());
             return false;
         }
     }

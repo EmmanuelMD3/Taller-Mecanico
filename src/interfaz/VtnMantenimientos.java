@@ -19,6 +19,10 @@ import modelo.Mantenimiento;
 import modelo.Vehiculo;
 import cjb.ci.CtrlInterfaz;
 import dao.ExportarCSV;
+import dao.MaterialDAO;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import modelo.Material;
 
 /**
  *
@@ -28,6 +32,7 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
 {
 
     private com.toedter.calendar.JDateChooser fecha;
+    private DefaultTableModel modeloMateriales;
 
     /**
      * Creates new form VtnDueño
@@ -66,6 +71,8 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
                 filtrarMantenimiento();
             }
         });
+
+        modeloMateriales = (DefaultTableModel) tablaMateriales.getModel();
     }
 
     /**
@@ -98,6 +105,20 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         jLabel9 = new javax.swing.JLabel();
         comboEmpleados = new javax.swing.JComboBox<>();
         jButton4 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tablaMateriales = new javax.swing.JTable();
+        jLabel10 = new javax.swing.JLabel();
+        materialJT = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        precioUJT = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
+        manoObraJT = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        totalJT = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -140,13 +161,13 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
             },
             new String []
             {
-                "ID MANTENIMIENTO", "DESCRIPCCION", "FECHA", "ID VEHICULO", "ID EMPLEADO"
+                "ID MANTENIMIENTO", "DESCRIPCCION", "FECHA", "ID VEHICULO", "ID EMPLEADO", "MANO DE OBRA", "TOTAL"
             }
         )
         {
             boolean[] canEdit = new boolean []
             {
-                false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex)
@@ -192,11 +213,11 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
 
         jLabel3.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel3.setText("INFORMACION");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 50, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 0, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel4.setText("Descripccion:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 90, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 20, -1, -1));
 
         modificar.setBackground(new java.awt.Color(153, 153, 255));
         modificar.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -253,36 +274,39 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel7.setText("Empleado:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 300, -1, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 380, -1, -1));
+
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         descripccionJT.setColumns(20);
         descripccionJT.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         descripccionJT.setRows(5);
         jScrollPane2.setViewportView(descripccionJT);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 120, 370, -1));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 50, 370, 30));
 
         calendario.setBackground(new java.awt.Color(255, 255, 255));
         calendario.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        getContentPane().add(calendario, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 260, 150, 30));
+        getContentPane().add(calendario, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 320, 150, 30));
 
         jLabel8.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel8.setText("Fecha:");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 230, -1, -1));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 290, -1, -1));
 
         comboVehiculos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         comboVehiculos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         comboVehiculos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        getContentPane().add(comboVehiculos, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 330, 180, -1));
+        getContentPane().add(comboVehiculos, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 410, 180, -1));
 
         jLabel9.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel9.setText("Vehiculo: ");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 300, -1, -1));
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 380, -1, -1));
 
         comboEmpleados.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         comboEmpleados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         comboEmpleados.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        getContentPane().add(comboEmpleados, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 330, 170, -1));
+        getContentPane().add(comboEmpleados, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 410, 170, -1));
 
         jButton4.setBackground(new java.awt.Color(51, 153, 255));
         jButton4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -296,6 +320,112 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
             }
         });
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 50, 150, -1));
+
+        jLabel5.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jLabel5.setText("Materiales:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 80, -1, -1));
+
+        tablaMateriales.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        tablaMateriales.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][]
+            {
+
+            },
+            new String []
+            {
+                "ID", "MATERIAL", "PRECIO UNI"
+            }
+        )
+        {
+            boolean[] canEdit = new boolean []
+            {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex)
+            {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaMateriales.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                tablaMaterialesMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tablaMateriales);
+
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 110, 370, 90));
+
+        jLabel10.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jLabel10.setText("Material:");
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 200, -1, -1));
+
+        materialJT.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        getContentPane().add(materialJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 230, 120, -1));
+
+        jLabel11.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jLabel11.setText("Precio:");
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 200, -1, -1));
+
+        precioUJT.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        getContentPane().add(precioUJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 230, 130, -1));
+
+        jButton1.setBackground(new java.awt.Color(102, 255, 102));
+        jButton1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("AGREGAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 200, -1, -1));
+
+        jButton2.setBackground(new java.awt.Color(255, 0, 0));
+        jButton2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("ELIMINAR");
+        jButton2.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 230, 100, -1));
+
+        jLabel12.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jLabel12.setText("Mano de Obra:");
+        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 260, -1, -1));
+
+        manoObraJT.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        getContentPane().add(manoObraJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 290, 140, -1));
+
+        jLabel13.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jLabel13.setText("Total:");
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 330, -1, 20));
+
+        totalJT.setEditable(false);
+        totalJT.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        totalJT.setText("$0.00");
+        getContentPane().add(totalJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 350, 140, -1));
+
+        jButton3.setBackground(new java.awt.Color(153, 153, 255));
+        jButton3.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("MODIFICAR");
+        jButton3.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 260, 120, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -315,23 +445,21 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         String descipccion = descripccionJT.getText().trim();
         if (descipccion.isEmpty())
         {
-            JOptionPane.showMessageDialog(this, "La Descripccion no puede estar vacía.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "La Descripción no puede estar vacía.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         String vehiculoSeleccionado = (String) comboVehiculos.getSelectedItem();
-
         VehiculoDAO vehiculoDAO = new VehiculoDAO();
         int idVehiculo = vehiculoDAO.obtenerIdPorPlaca(vehiculoSeleccionado);
 
         String empledoSeleccionado = (String) comboEmpleados.getSelectedItem();
-
         EmpleadoDAO empleadoDAO = new EmpleadoDAO();
         int idEmpleado = empleadoDAO.obtenerIdPorNombre(empledoSeleccionado);
 
         if (idVehiculo == -1)
         {
-            JOptionPane.showMessageDialog(this, "No se encontró el Vehiculo.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se encontró el Vehículo.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -346,28 +474,58 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
             JOptionPane.showMessageDialog(this, "Por favor, seleccione una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+
         java.sql.Date fechaSeleccionada = new java.sql.Date(fecha.getDate().getTime());
 
-        Mantenimiento nuevoMantenimiento = new Mantenimiento(0, descipccion, fechaSeleccionada, idVehiculo, idEmpleado);
-        MantenimientoDAO manetnieminetoDao = new MantenimientoDAO();
-        boolean exito = manetnieminetoDao.insertarMantenimiento(nuevoMantenimiento);
-        if (exito)
+        double costoManoObra;
+        try
         {
-            JOptionPane.showMessageDialog(this, "Mantenimiento agregado con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
+            costoManoObra = Double.parseDouble(manoObraJT.getText());
+        } catch (NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(this, "El costo de mano de obra no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        double totalMateriales = 0.0;
+
+        for (int i = 0; i < modeloMateriales.getRowCount(); i++)
+        {
+            totalMateriales += (double) modeloMateriales.getValueAt(i, 2);
+        }
+
+        double totalFinal = totalMateriales + costoManoObra;
+
+        Mantenimiento nuevoMantenimiento = new Mantenimiento(0, descipccion, fechaSeleccionada, idVehiculo, idEmpleado, costoManoObra, totalFinal);
+        MantenimientoDAO mantenimientoDAO = new MantenimientoDAO();
+        int idMantenimientoGenerado = mantenimientoDAO.insertarMantenimiento(nuevoMantenimiento);
+
+        if (idMantenimientoGenerado > 0)
+        {
+            for (int i = 0; i < modeloMateriales.getRowCount(); i++)
+            {
+                String nombre = (String) modeloMateriales.getValueAt(i, 1);
+                double precio = (double) modeloMateriales.getValueAt(i, 2);
+
+                System.out.println("Insertando material: " + nombre + " - $" + precio);
+
+                Material mat = new Material(nombre, precio, idMantenimientoGenerado);
+                MaterialDAO.insertarMaterial(mat);
+            }
+
+            JOptionPane.showMessageDialog(this, "Mantenimiento y materiales agregados con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            limpiaCampos();
+            modeloMateriales.setRowCount(0);
             llenarTablaMantenimientos();
         } else
         {
-            JOptionPane.showMessageDialog(this, "Mantenimiento no agregado", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se pudo guardar el mantenimiento.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_altaActionPerformed
 
     private void limpiarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_limpiarActionPerformed
     {//GEN-HEADEREND:event_limpiarActionPerformed
-        CtrlInterfaz.limpia(descripccionJT);
-        comboEmpleados.setSelectedIndex(0);
-        comboVehiculos.setSelectedIndex(0);
-
-        fecha.setDate(null);
+        limpiaCampos();
     }//GEN-LAST:event_limpiarActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt)//GEN-FIRST:event_formInternalFrameOpened
@@ -375,6 +533,7 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         llenarComboEmpleados(comboEmpleados);
         llenarComboVehiculos(comboVehiculos);
         llenarTablaMantenimientos();
+        imprimeTotal();
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabel6MouseClicked
@@ -426,54 +585,75 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
         {
             DefaultTableModel modeloTabla = (DefaultTableModel) tablaMantenimientos.getModel();
 
-            String descripcion = (String) modeloTabla.getValueAt(filaSeleccionada, 1);
-            Date fecha = (Date) modeloTabla.getValueAt(filaSeleccionada, 2);
-            int idVehiculo = (int) modeloTabla.getValueAt(filaSeleccionada, 3);
-            int idEmpleado = (int) modeloTabla.getValueAt(filaSeleccionada, 4);
-
-            descripccionJT.setText(descripcion);
-
-            this.fecha.setDate(fecha);
-
-            VehiculoDAO vehiculoDAO = new VehiculoDAO();
-            String placaVehiculo = vehiculoDAO.obtenerPlacaPorId(idVehiculo);
-
-            if (placaVehiculo != null)
+            try
             {
-                for (int i = 0; i < comboVehiculos.getItemCount(); i++)
+                int idMantenimiento = (int) modeloTabla.getValueAt(filaSeleccionada, 0);
+                String descripcion = (String) modeloTabla.getValueAt(filaSeleccionada, 1);
+                Date fechaSeleccionada = (Date) modeloTabla.getValueAt(filaSeleccionada, 2);
+                int idVehiculo = (int) modeloTabla.getValueAt(filaSeleccionada, 3);
+                int idEmpleado = (int) modeloTabla.getValueAt(filaSeleccionada, 4);
+                double costoManoObra = (double) modeloTabla.getValueAt(filaSeleccionada, 5);
+                double totalMantenimiento = (double) modeloTabla.getValueAt(filaSeleccionada, 6);
+
+                descripccionJT.setText(descripcion);
+                this.fecha.setDate(fechaSeleccionada);
+                manoObraJT.setText(String.valueOf(costoManoObra));
+                totalJT.setText(String.valueOf(totalMantenimiento));
+
+                VehiculoDAO vehiculoDAO = new VehiculoDAO();
+                String placaVehiculo = vehiculoDAO.obtenerPlacaPorId(idVehiculo);
+
+                if (placaVehiculo != null)
                 {
-                    if (comboVehiculos.getItemAt(i).equals(placaVehiculo))
+                    for (int i = 0; i < comboVehiculos.getItemCount(); i++)
                     {
-                        comboVehiculos.setSelectedIndex(i);
-                        break;
+                        if (comboVehiculos.getItemAt(i).equals(placaVehiculo))
+                        {
+                            comboVehiculos.setSelectedIndex(i);
+                            break;
+                        }
                     }
                 }
-            }
 
-            EmpleadoDAO empleadoDAO = new EmpleadoDAO();
-            String nombreEmpleado = empleadoDAO.obtenerNombrePorId(idEmpleado);
+                EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+                String nombreEmpleado = empleadoDAO.obtenerNombrePorId(idEmpleado);
 
-            if (nombreEmpleado != null)
-            {
-                for (int i = 0; i < comboEmpleados.getItemCount(); i++)
+                if (nombreEmpleado != null)
                 {
-                    if (comboEmpleados.getItemAt(i).equals(nombreEmpleado))
+                    for (int i = 0; i < comboEmpleados.getItemCount(); i++)
                     {
-                        comboEmpleados.setSelectedIndex(i);
-                        break;
+                        if (comboEmpleados.getItemAt(i).equals(nombreEmpleado))
+                        {
+                            comboEmpleados.setSelectedIndex(i);
+                            break;
+                        }
                     }
                 }
+
+                modeloMateriales.setRowCount(0);
+                List<Material> materiales = MaterialDAO.obtenerMaterialesPorMantenimiento(idMantenimiento);
+
+                for (Material mat : materiales)
+                {
+                    Object[] filaMaterial =
+                    {
+                        mat.getId_material(),
+                        mat.getNombre(),
+                        mat.getPrecio_unitario()
+                    };
+                    modeloMateriales.addRow(filaMaterial);
+                }
+
+            } catch (Exception e)
+            {
+                JOptionPane.showMessageDialog(this, "Error al cargar el mantenimiento seleccionado.\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
             }
         }
     }//GEN-LAST:event_tablaMantenimientosMouseClicked
 
     private void modificarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_modificarActionPerformed
     {//GEN-HEADEREND:event_modificarActionPerformed
-        MantenimientoDAO mantenimientoDAO = new MantenimientoDAO();
-        VehiculoDAO vehiculoDAO = new VehiculoDAO();
-        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
-        Mantenimiento mantenimientoActualizado = new Mantenimiento();
-
         int filaSeleccionada = tablaMantenimientos.getSelectedRow();
 
         if (filaSeleccionada == -1)
@@ -482,60 +662,119 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
             return;
         }
 
-        DefaultTableModel modeloTabla = (DefaultTableModel) tablaMantenimientos.getModel();
-
-        String descripcion = descripccionJT.getText().trim();
-
-        if (fecha.getDate() == null)
-        {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        java.sql.Date fechaSeleccionada = new java.sql.Date(fecha.getDate().getTime());
-        String vehiculoSeleccionado = (String) comboVehiculos.getSelectedItem();
-        String empleadoSeleccionado = (String) comboEmpleados.getSelectedItem();
-
-        if (descripcion.isEmpty() || vehiculoSeleccionado == null || empleadoSeleccionado == null)
-        {
-            JOptionPane.showMessageDialog(this, "Todos los campos deben estar llenos.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int idVehiculo = vehiculoDAO.obtenerIdPorPlaca(vehiculoSeleccionado);
-        int idEmpleado = empleadoDAO.obtenerIdPorNombre(empleadoSeleccionado);
-
-        if (idVehiculo == -1 || idEmpleado == -1)
-        {
-            JOptionPane.showMessageDialog(this, "No se pudo obtener el ID del vehículo o empleado.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int idMantenimiento;
         try
         {
-            Object valorCelda = modeloTabla.getValueAt(filaSeleccionada, 0);
-            idMantenimiento = Integer.parseInt(valorCelda.toString());
-        } catch (NumberFormatException e)
-        {
-            JOptionPane.showMessageDialog(this, "Error al obtener el ID del mantenimiento.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+            DefaultTableModel modeloTabla = (DefaultTableModel) tablaMantenimientos.getModel();
+            int idMantenimiento = Integer.parseInt(modeloTabla.getValueAt(filaSeleccionada, 0).toString());
 
-        mantenimientoActualizado.setId_mantenimiento(idMantenimiento);
-        mantenimientoActualizado.setDescripccion(descripcion);
-        mantenimientoActualizado.setFecha(fechaSeleccionada);
-        mantenimientoActualizado.setId_vehiculo(idVehiculo);
-        mantenimientoActualizado.setId_empleado(idEmpleado);
+            String descripcion = descripccionJT.getText().trim();
+            if (descripcion.isEmpty())
+            {
+                JOptionPane.showMessageDialog(this, "La descripción no puede estar vacía.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-        boolean exito = mantenimientoDAO.modificarMantenimiento(mantenimientoActualizado);
+            if (fecha.getDate() == null)
+            {
+                JOptionPane.showMessageDialog(this, "Por favor, seleccione una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            java.sql.Date fechaSeleccionada = new java.sql.Date(fecha.getDate().getTime());
 
-        if (exito)
-        {
-            JOptionPane.showMessageDialog(this, "Mantenimiento actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            String vehiculoSeleccionado = (String) comboVehiculos.getSelectedItem();
+            String empleadoSeleccionado = (String) comboEmpleados.getSelectedItem();
+
+            VehiculoDAO vehiculoDAO = new VehiculoDAO();
+            EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+
+            int idVehiculo = vehiculoDAO.obtenerIdPorPlaca(vehiculoSeleccionado);
+            int idEmpleado = empleadoDAO.obtenerIdPorNombre(empleadoSeleccionado);
+
+            if (idVehiculo == -1 || idEmpleado == -1)
+            {
+                JOptionPane.showMessageDialog(this, "No se pudo obtener el ID del vehículo o empleado.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            double costoManoObra = 0.0;
+            String textoMano = manoObraJT.getText().trim();
+            if (!textoMano.isEmpty())
+            {
+                try
+                {
+                    costoManoObra = Double.parseDouble(textoMano);
+                } catch (NumberFormatException e)
+                {
+                    JOptionPane.showMessageDialog(this, "Mano de obra inválida.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+
+            double totalMateriales = 0.0;
+            for (int i = 0; i < modeloMateriales.getRowCount(); i++)
+            {
+                try
+                {
+                    totalMateriales += (double) modeloMateriales.getValueAt(i, 2);
+                } catch (Exception e)
+                {
+                    try
+                    {
+                        totalMateriales += Double.parseDouble(modeloMateriales.getValueAt(i, 2).toString());
+                    } catch (Exception ignored)
+                    {
+                    }
+                }
+            }
+
+            double totalFinal = totalMateriales + costoManoObra;
+            totalJT.setText(String.format("$%.2f", totalFinal)); 
+
+            Mantenimiento mantenimientoActualizado = new Mantenimiento(
+                    idMantenimiento, descripcion, fechaSeleccionada, idVehiculo, idEmpleado, costoManoObra, totalFinal
+            );
+
+            MantenimientoDAO mantenimientoDAO = new MantenimientoDAO();
+            boolean exito = mantenimientoDAO.modificarMantenimiento(mantenimientoActualizado);
+
+            if (!exito)
+            {
+                JOptionPane.showMessageDialog(this, "Error al actualizar el mantenimiento.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            List<Material> existentes = MaterialDAO.obtenerMaterialesPorMantenimiento(idMantenimiento);
+
+            for (int i = 0; i < modeloMateriales.getRowCount(); i++)
+            {
+                String nombre = (String) modeloMateriales.getValueAt(i, 1);
+                double precio = (double) modeloMateriales.getValueAt(i, 2);
+
+                boolean yaExiste = false;
+                for (Material mat : existentes)
+                {
+                    if (mat.getNombre().equalsIgnoreCase(nombre) && mat.getPrecio_unitario() == precio)
+                    {
+                        yaExiste = true;
+                        break;
+                    }
+                }
+
+                if (!yaExiste)
+                {
+                    Material nuevo = new Material(nombre, precio, idMantenimiento);
+                    MaterialDAO.insertarMaterial(nuevo);
+                }
+            }
+
+            JOptionPane.showMessageDialog(this, "Mantenimiento actualizado y materiales nuevos agregados.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            limpiaCampos();
             llenarTablaMantenimientos();
-        } else
+
+        } catch (Exception e)
         {
-            JOptionPane.showMessageDialog(this, "Error al actualizar el mantenimiento.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al modificar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }//GEN-LAST:event_modificarActionPerformed
 
@@ -543,10 +782,10 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
     {//GEN-HEADEREND:event_jButton4ActionPerformed
         ExportarCSV exportarCSV = new ExportarCSV();
 
-        String query = "SELECT * FROM Mantenimiento"; 
+        String query = "SELECT * FROM Mantenimiento";
 
-        String ruta = System.getProperty("user.home") + "/Downloads/mantenimientos_export.csv"; 
-       
+        String ruta = System.getProperty("user.home") + "/Downloads/mantenimientos_export.csv";
+
         boolean exito = exportarCSV.exportarMantenimientosACSV(query, ruta);
 
         if (exito)
@@ -557,6 +796,144 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
             JOptionPane.showMessageDialog(null, "Error al exportar los mantenimientos.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
+    {//GEN-HEADEREND:event_jButton1ActionPerformed
+        String nombreMaterial = materialJT.getText().trim();
+        String precioStr = precioUJT.getText().trim();
+
+        if (nombreMaterial.isEmpty() || precioStr.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Debes llenar ambos campos: material y precio.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try
+        {
+            double precio = Double.parseDouble(precioStr);
+            int id = modeloMateriales.getRowCount() + 1;
+
+            modeloMateriales.addRow(new Object[]
+            {
+                id, nombreMaterial, precio
+            });
+            imprimeTotal();
+            materialJT.setText("");
+            precioUJT.setText("");
+        } catch (NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(this, "El precio debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton2ActionPerformed
+    {//GEN-HEADEREND:event_jButton2ActionPerformed
+        int filaSeleccionada = tablaMateriales.getSelectedRow();
+
+        if (filaSeleccionada < 0 || filaSeleccionada >= tablaMateriales.getRowCount())
+        {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un material válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de que desea eliminar el material seleccionado?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+        imprimeTotal();
+
+        if (confirmacion == JOptionPane.YES_OPTION)
+        {
+            modeloMateriales.removeRow(filaSeleccionada);
+            JOptionPane.showMessageDialog(this, "Material eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton3ActionPerformed
+    {//GEN-HEADEREND:event_jButton3ActionPerformed
+        int filaSeleccionada = tablaMateriales.getSelectedRow();
+
+        if (filaSeleccionada == -1)
+        {
+            JOptionPane.showMessageDialog(this, "Selecciona un material para modificar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String nuevoNombre = materialJT.getText().trim();
+        String nuevoPrecioStr = precioUJT.getText().trim();
+
+        if (nuevoNombre.isEmpty() || nuevoPrecioStr.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Material y precio no pueden estar vacíos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try
+        {
+            double nuevoPrecio = Double.parseDouble(nuevoPrecioStr);
+            int idMaterial = (int) modeloMateriales.getValueAt(filaSeleccionada, 0);
+
+            Material actualizado = new Material(idMaterial, nuevoNombre, nuevoPrecio);
+            MaterialDAO.actualizarMaterial(actualizado);
+
+            modeloMateriales.setValueAt(nuevoNombre, filaSeleccionada, 1);
+            modeloMateriales.setValueAt(nuevoPrecio, filaSeleccionada, 2);
+
+            JOptionPane.showMessageDialog(this, "Material actualizado correctamente.");
+
+        } catch (NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(this, "El precio debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void tablaMaterialesMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_tablaMaterialesMouseClicked
+    {//GEN-HEADEREND:event_tablaMaterialesMouseClicked
+        int filaSeleccionada = tablaMateriales.getSelectedRow();
+
+        if (filaSeleccionada != -1)
+        {
+            String nombreMaterial = (String) modeloMateriales.getValueAt(filaSeleccionada, 1);
+            double precioMaterial = (double) modeloMateriales.getValueAt(filaSeleccionada, 2);
+
+            materialJT.setText(nombreMaterial);
+            precioUJT.setText(String.valueOf(precioMaterial));
+        }
+    }//GEN-LAST:event_tablaMaterialesMouseClicked
+    private void limpiaCampos()
+    {
+        CtrlInterfaz.limpia(descripccionJT,materialJT,precioUJT, manoObraJT);
+        totalJT.setText("$0.00");
+        comboEmpleados.setSelectedIndex(0);
+        comboVehiculos.setSelectedIndex(0);
+        fecha.setDate(null);
+        modeloMateriales.setRowCount(0);
+    }
+    
+    private void imprimeTotal()
+    {
+        manoObraJT.getDocument().addDocumentListener(new DocumentListener()
+        {
+            public void insertUpdate(DocumentEvent e)
+            {
+                calcularTotal();
+            }
+
+            public void removeUpdate(DocumentEvent e)
+            {
+                calcularTotal();
+            }
+
+            public void changedUpdate(DocumentEvent e)
+            {
+                calcularTotal();
+            }
+        });
+    }
 
     public void filtrarMantenimiento()
     {
@@ -579,7 +956,9 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
                     mantenimiento.getDescripccion(),
                     mantenimiento.getFecha(),
                     mantenimiento.getId_vehiculo(),
-                    mantenimiento.getId_empleado()
+                    mantenimiento.getId_empleado(),
+                    mantenimiento.getCostoManoObra(),
+                    mantenimiento.getTotal()
                 };
                 modeloTabla.addRow(fila);
             }
@@ -601,23 +980,51 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
                 mantenimiento.getDescripccion(),
                 mantenimiento.getFecha(),
                 mantenimiento.getId_vehiculo(),
-                mantenimiento.getId_empleado()
+                mantenimiento.getId_empleado(),
+                mantenimiento.getCostoManoObra(),
+                mantenimiento.getTotal()
             };
             modelo.addRow(fila);
         }
     }
-//    private void llenarTablaMantenimientos()
-//    {
-//        DefaultTableModel modelo = (DefaultTableModel) tablaMantenimientos.getModel();
-//        modelo.setRowCount(0);
-//
-//        List<Object[]> mantenimientos = MantenimientoDAO.listarMantenimiento1();
-//
-//        for (Object[] fila : mantenimientos)
-//        {
-//            modelo.addRow(fila);
-//        }
-//    }
+
+    private void calcularTotal()
+    {
+        double totalMateriales = 0.0;
+
+        for (int i = 0; i < modeloMateriales.getRowCount(); i++)
+        {
+            try
+            {
+                totalMateriales += (double) modeloMateriales.getValueAt(i, 2);
+            } catch (Exception e)
+            {
+                try
+                {
+                    totalMateriales += Double.parseDouble(modeloMateriales.getValueAt(i, 2).toString());
+                } catch (Exception ex)
+                {
+
+                }
+            }
+        }
+
+        double manoObra = 0.0;
+        String textoManoObra = manoObraJT.getText().trim();
+        if (!textoManoObra.isEmpty())
+        {
+            try
+            {
+                manoObra = Double.parseDouble(textoManoObra);
+            } catch (NumberFormatException e)
+            {
+                manoObra = 0.0;
+            }
+        }
+
+        double totalFinal = totalMateriales + manoObra;
+        totalJT.setText(String.format("$%.2f", totalFinal));
+    }
 
     public void llenarComboEmpleados(JComboBox<String> comboEmpleados)
     {
@@ -660,19 +1067,33 @@ public class VtnMantenimientos extends javax.swing.JInternalFrame
     private javax.swing.JComboBox<String> comboEmpleados;
     private javax.swing.JComboBox<String> comboVehiculos;
     private javax.swing.JTextArea descripccionJT;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JButton limpiar;
+    private javax.swing.JTextField manoObraJT;
+    private javax.swing.JTextField materialJT;
     private javax.swing.JButton modificar;
+    private javax.swing.JTextField precioUJT;
     private javax.swing.JTable tablaMantenimientos;
+    private javax.swing.JTable tablaMateriales;
+    private javax.swing.JTextField totalJT;
     // End of variables declaration//GEN-END:variables
 }

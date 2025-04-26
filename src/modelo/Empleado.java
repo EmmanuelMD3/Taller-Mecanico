@@ -10,17 +10,19 @@ package modelo;
  */
 public class Empleado
 {
+
     private int id_empleado;
     private String nombre;
     private String apellido;
     private String correo;
     private String contraseña;
+    private double sueldo;
 
     public Empleado()
     {
     }
 
-    public Empleado(int id_empleado, String nombre, String apellido,String correo, String contraseña)
+    public Empleado(int id_empleado, String nombre, String apellido, String correo, String contraseña)
     {
         this.id_empleado = id_empleado;
         this.nombre = nombre;
@@ -29,6 +31,15 @@ public class Empleado
         this.contraseña = contraseña;
     }
 
+    public Empleado(int id_empleado, String nombre, String apellido, String correo, String contrasena, double sueldo)
+    {
+        this.id_empleado = id_empleado;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+        this.contraseña = contrasena;
+        this.sueldo = sueldo;
+    }
 
     /**
      * @return the id_empleado
@@ -109,5 +120,21 @@ public class Empleado
     {
         this.apellido = apellido;
     }
-  
+
+    /**
+     * @return the sueldo
+     */
+    public double getSueldo()
+    {
+        return sueldo;
+    }
+
+    /**
+     * @param sueldo the sueldo to set
+     */
+    public void setSueldo(double sueldo)
+    {
+        this.sueldo = sueldo;
+    }
+
 }

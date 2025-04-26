@@ -16,8 +16,6 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import modelo.Empleado;
 
-
-
 /**
  *
  * @author chemo
@@ -88,6 +86,8 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
         contrasenaJT = new javax.swing.JPasswordField();
         mostrarCheckBox = new javax.swing.JCheckBox();
         jButton1 = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        sueldoJT = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -131,13 +131,13 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
             },
             new String []
             {
-                "ID", "NOMBRE", "APELLIDO", "CORREO"
+                "ID", "NOMBRE", "APELLIDO", "CORREO", "SUELDO"
             }
         )
         {
             boolean[] canEdit = new boolean []
             {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex)
@@ -244,14 +244,14 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
 
         jLabel4.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel4.setText("Nombre: ");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 90, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 60, -1, -1));
 
         nombreJT.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        getContentPane().add(nombreJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 120, 360, -1));
+        getContentPane().add(nombreJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 90, 360, -1));
 
         jLabel5.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        jLabel5.setText("Contraseña:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 330, -1, -1));
+        jLabel5.setText("Sueldo:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 360, -1, -1));
 
         correoJT.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         correoJT.addActionListener(new java.awt.event.ActionListener()
@@ -261,11 +261,11 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
                 correoJTActionPerformed(evt);
             }
         });
-        getContentPane().add(correoJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 280, 360, -1));
+        getContentPane().add(correoJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 230, 360, -1));
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel7.setText("Apellido:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 170, -1, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 130, -1, -1));
 
         apellidoJT.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         apellidoJT.addActionListener(new java.awt.event.ActionListener()
@@ -275,14 +275,14 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
                 apellidoJTActionPerformed(evt);
             }
         });
-        getContentPane().add(apellidoJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 200, 360, -1));
+        getContentPane().add(apellidoJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 160, 360, -1));
 
         jLabel8.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         jLabel8.setText("Correo:");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 250, -1, -1));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 200, -1, -1));
 
         contrasenaJT.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        getContentPane().add(contrasenaJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 360, 360, -1));
+        getContentPane().add(contrasenaJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 300, 360, -1));
 
         mostrarCheckBox.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         mostrarCheckBox.setText("Mostrar Contraseña");
@@ -293,7 +293,7 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
                 mostrarCheckBoxActionPerformed(evt);
             }
         });
-        getContentPane().add(mostrarCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 390, -1, -1));
+        getContentPane().add(mostrarCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 330, -1, -1));
 
         jButton1.setBackground(new java.awt.Color(51, 153, 255));
         jButton1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -307,6 +307,13 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
             }
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 50, 150, -1));
+
+        jLabel9.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jLabel9.setText("Contraseña:");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 270, -1, -1));
+
+        sueldoJT.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        getContentPane().add(sueldoJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 390, 360, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -322,10 +329,14 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
             String nombre = (String) modeloTabla.getValueAt(filaSeleccionada, 1);
             String apellido = (String) modeloTabla.getValueAt(filaSeleccionada, 2);
             String correo = (String) modeloTabla.getValueAt(filaSeleccionada, 3);
+            String sueldoTexto = modeloTabla.getValueAt(filaSeleccionada, 4).toString();
+
+            sueldoTexto = sueldoTexto.replace("$", "").trim();
 
             nombreJT.setText(nombre);
             apellidoJT.setText(apellido);
             correoJT.setText(correo);
+            sueldoJT.setText(sueldoTexto);
         }
     }//GEN-LAST:event_tablaEmpleadoMouseClicked
 
@@ -382,10 +393,11 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
 
     private void altaActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_altaActionPerformed
     {//GEN-HEADEREND:event_altaActionPerformed
-        String nombre = nombreJT.getText();
-        String apellido = apellidoJT.getText();
-        String correo = correoJT.getText();
-        String contrasena = new String(contrasenaJT.getPassword());
+        String nombre = nombreJT.getText().trim();
+        String apellido = apellidoJT.getText().trim();
+        String correo = correoJT.getText().trim();
+        String contrasena = new String(contrasenaJT.getPassword()).trim();
+        String textoSueldo = sueldoJT.getText().trim();
 
         if (nombre.isEmpty())
         {
@@ -404,6 +416,7 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
             JOptionPane.showMessageDialog(this, "El correo no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+
         if (!correo.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"))
         {
             JOptionPane.showMessageDialog(this, "Correo electrónico inválido.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -416,7 +429,20 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
             return;
         }
 
-        Empleado nuevoEmpleado = new Empleado(0, nombre, apellido, correo, contrasena);
+        double sueldo = 0.0;
+        if (!textoSueldo.isEmpty())
+        {
+            try
+            {
+                sueldo = Double.parseDouble(textoSueldo);
+            } catch (NumberFormatException e)
+            {
+                JOptionPane.showMessageDialog(this, "El sueldo debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+
+        Empleado nuevoEmpleado = new Empleado(0, nombre, apellido, correo, contrasena, sueldo);
 
         EmpleadoDAO empleadoDAO = new EmpleadoDAO();
         boolean exito = empleadoDAO.insertarEmpleado(nuevoEmpleado);
@@ -424,6 +450,7 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
         if (exito)
         {
             JOptionPane.showMessageDialog(this, "Empleado registrado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            limpiarCampos();
             llenarTablaEmpleados();
         } else
         {
@@ -445,8 +472,9 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
         String apellido = apellidoJT.getText().trim();
         String correo = correoJT.getText().trim();
         String contra = contrasenaJT.getText().trim();
+        String textoSueldo = sueldoJT.getText().trim();
 
-        if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || contra.isEmpty())
+        if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || contra.isEmpty() || textoSueldo.isEmpty())
         {
             JOptionPane.showMessageDialog(this, "Todos los campos deben estar llenos.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -455,6 +483,16 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
         if (!correo.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"))
         {
             JOptionPane.showMessageDialog(this, "Correo electrónico no válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        double sueldo;
+        try
+        {
+            sueldo = Double.parseDouble(textoSueldo);
+        } catch (NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(this, "Sueldo inválido. Debe ser un número.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -470,7 +508,7 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
             return;
         }
 
-        Empleado empleado = new Empleado(idEmpleado, nombre, apellido, correo, contra);
+        Empleado empleado = new Empleado(idEmpleado, nombre, apellido, correo, contra, sueldo);
 
         EmpleadoDAO empleadoDAO = new EmpleadoDAO();
         boolean exito = empleadoDAO.actualizarEmpleado(empleado);
@@ -478,6 +516,7 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
         if (exito)
         {
             JOptionPane.showMessageDialog(this, "Empleado actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            limpiarCampos();
             llenarTablaEmpleados();
         } else
         {
@@ -487,7 +526,7 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
 
     private void limpiarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_limpiarActionPerformed
     {//GEN-HEADEREND:event_limpiarActionPerformed
-        CtrlInterfaz.limpia(nombreJT, apellidoJT, correoJT, contrasenaJT);
+        limpiarCampos();
     }//GEN-LAST:event_limpiarActionPerformed
 
     private void correoJTActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_correoJTActionPerformed
@@ -525,7 +564,7 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
     {//GEN-HEADEREND:event_jButton1ActionPerformed
         ExportarCSV exportarCSV = new ExportarCSV();
 
-        String query = "SELECT * FROM empleado"; 
+        String query = "SELECT * FROM empleado";
 
         String ruta = System.getProperty("user.home") + "/Downloads/empleados_export.csv";
 
@@ -546,6 +585,10 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
             JOptionPane.showMessageDialog(null, "Error al exportar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+    private void limpiarCampos()
+    {
+        CtrlInterfaz.limpia(nombreJT, apellidoJT, correoJT, contrasenaJT, sueldoJT);
+    }
 
     private void llenarTablaEmpleados()
     {
@@ -561,7 +604,8 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
                 empleado.getId_empleado(),
                 empleado.getNombre(),
                 empleado.getApellido(),
-                empleado.getCorreo()
+                empleado.getCorreo(),
+                String.format("$%.2f", empleado.getSueldo())
             };
             modelo.addRow(fila);
         }
@@ -587,7 +631,8 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
                     empleado.getId_empleado(),
                     empleado.getNombre(),
                     empleado.getApellido(),
-                    empleado.getCorreo()
+                    empleado.getCorreo(),
+                    String.format("$%.2f", empleado.getSueldo())
                 };
                 modeloTabla.addRow(fila);
             }
@@ -610,11 +655,13 @@ public class VtnEmpleados extends javax.swing.JInternalFrame
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton limpiar;
     private javax.swing.JButton modifcar;
     private javax.swing.JCheckBox mostrarCheckBox;
     private javax.swing.JTextField nombreJT;
+    private javax.swing.JTextField sueldoJT;
     private javax.swing.JTable tablaEmpleado;
     // End of variables declaration//GEN-END:variables
 

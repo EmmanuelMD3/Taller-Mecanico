@@ -12,17 +12,34 @@ import java.util.Date;
  */
 public class Mantenimiento
 {
+
     private int id_mantenimiento;
     private String descripccion;
     private Date fecha;
     private int id_vehiculo;
     private int id_empleado;
+    private double costoManoObra;
+    private double total;
 
     public Mantenimiento()
     {
     }
 
-    public Mantenimiento(int id_mantenimiento, String descripccion, Date fecha, int id_vehiculo, int id_empleado)
+    public Mantenimiento(int id_mantenimiento, String descripccion, Date fecha,
+            int id_vehiculo, int id_empleado, double costoManoObra, double total)
+    {
+        this.id_mantenimiento = id_mantenimiento;
+        this.descripccion = descripccion;
+        this.fecha = fecha;
+        this.id_vehiculo = id_vehiculo;
+        this.id_empleado = id_empleado;
+        this.costoManoObra = costoManoObra;
+        this.total = total;
+    }
+
+    // Constructor básico (por si aún lo usas en otras partes)
+    public Mantenimiento(int id_mantenimiento, String descripccion, Date fecha,
+            int id_vehiculo, int id_empleado)
     {
         this.id_mantenimiento = id_mantenimiento;
         this.descripccion = descripccion;
@@ -109,5 +126,37 @@ public class Mantenimiento
     public void setId_empleado(int id_empleado)
     {
         this.id_empleado = id_empleado;
+    }
+
+    /**
+     * @return the costoManoObra
+     */
+    public double getCostoManoObra()
+    {
+        return costoManoObra;
+    }
+
+    /**
+     * @param costoManoObra the costoManoObra to set
+     */
+    public void setCostoManoObra(double costoManoObra)
+    {
+        this.costoManoObra = costoManoObra;
+    }
+
+    /**
+     * @return the total
+     */
+    public double getTotal()
+    {
+        return total;
+    }
+
+    /**
+     * @param total the total to set
+     */
+    public void setTotal(double total)
+    {
+        this.total = total;
     }
 }

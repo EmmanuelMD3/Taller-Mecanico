@@ -28,6 +28,7 @@ public class VtnPrincipal extends javax.swing.JFrame
         empleado.setEnabled(false);
         asistencia.setEnabled(false);
         cerrar_sesion.setEnabled(false);
+        ganancias.setEnabled(false);
 
     }
 
@@ -57,6 +58,7 @@ public class VtnPrincipal extends javax.swing.JFrame
         login = new javax.swing.JMenu();
         empleado = new javax.swing.JMenu();
         asistencia = new javax.swing.JMenu();
+        ganancias = new javax.swing.JMenu();
         cerrar_sesion = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -198,6 +200,18 @@ public class VtnPrincipal extends javax.swing.JFrame
         });
         administrador.add(asistencia);
 
+        ganancias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ganador.png"))); // NOI18N
+        ganancias.setText("Ganancias");
+        ganancias.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        ganancias.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                gananciasMouseClicked(evt);
+            }
+        });
+        administrador.add(ganancias);
+
         cerrar_sesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cerrar-sesion.png"))); // NOI18N
         cerrar_sesion.setText("Cerrar Sesion");
         cerrar_sesion.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
@@ -241,7 +255,7 @@ public class VtnPrincipal extends javax.swing.JFrame
 
     private void administradorMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_administradorMouseClicked
     {//GEN-HEADEREND:event_administradorMouseClicked
-
+        
     }//GEN-LAST:event_administradorMouseClicked
 
     private void empleadoMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_empleadoMouseClicked
@@ -251,7 +265,6 @@ public class VtnPrincipal extends javax.swing.JFrame
         if (activo)
         {
             panelControl.removeAll();
-            //CtrlInterfaz.habilita(true, empleado, asistencia);
             VtnEmpleados empleados = new VtnEmpleados();
             panelControl.add(empleados).setVisible(true);
         } else
@@ -276,6 +289,7 @@ public class VtnPrincipal extends javax.swing.JFrame
             empleado.setEnabled(true);
             asistencia.setEnabled(true);
             cerrar_sesion.setEnabled(true);
+            ganancias.setEnabled(true);
 
         } else
         {
@@ -285,10 +299,8 @@ public class VtnPrincipal extends javax.swing.JFrame
 
     private void empleadoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_empleadoActionPerformed
     {//GEN-HEADEREND:event_empleadoActionPerformed
-        panelControl.removeAll();
-        CtrlInterfaz.habilita(true, empleado, asistencia);
-        VtnEmpleados empleados = new VtnEmpleados();
-        panelControl.add(empleados).setVisible(true);
+       
+       
     }//GEN-LAST:event_empleadoActionPerformed
 
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jMenu4MouseClicked
@@ -309,8 +321,6 @@ public class VtnPrincipal extends javax.swing.JFrame
         {
             JOptionPane.showMessageDialog(this, "Inicie sesion como administrador", "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-
     }//GEN-LAST:event_asistenciaMouseClicked
 
     private void cerrar_sesionMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_cerrar_sesionMouseClicked
@@ -325,6 +335,7 @@ public class VtnPrincipal extends javax.swing.JFrame
             empleado.setEnabled(false);
             asistencia.setEnabled(false);
             cerrar_sesion.setEnabled(false);
+            ganancias.setEnabled(false);
             JOptionPane.showMessageDialog(this, "Sesion Cerrada", "Exito", JOptionPane.INFORMATION_MESSAGE);
         }
         else
@@ -332,6 +343,20 @@ public class VtnPrincipal extends javax.swing.JFrame
             JOptionPane.showMessageDialog(this, "Inicie Sesion", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_cerrar_sesionMouseClicked
+
+    private void gananciasMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_gananciasMouseClicked
+    {//GEN-HEADEREND:event_gananciasMouseClicked
+        boolean activo = ganancias.isEnabled();
+        if (activo)
+        {
+            panelControl.removeAll();
+            VtnGanancias ganancias = new VtnGanancias();
+            panelControl.add(ganancias).setVisible(true);
+        } else
+        {
+            JOptionPane.showMessageDialog(this, "Inicie sesion como administrador", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_gananciasMouseClicked
 
     /**
      * @param args the command line arguments
@@ -383,6 +408,7 @@ public class VtnPrincipal extends javax.swing.JFrame
     private javax.swing.JMenu asistencia;
     private javax.swing.JMenu cerrar_sesion;
     private javax.swing.JMenu empleado;
+    private javax.swing.JMenu ganancias;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;

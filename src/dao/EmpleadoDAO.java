@@ -22,27 +22,29 @@ public class EmpleadoDAO
 
     public boolean insertarEmpleado(Empleado empleado)
     {
-        String sql = "INSERT INTO Empleado (nombre, apellido, correo, contrasena) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO empleado (nombre, apellido, correo, contrasena, sueldo) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = Conexion.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql))
         {
+
             pstmt.setString(1, empleado.getNombre());
             pstmt.setString(2, empleado.getApellido());
             pstmt.setString(3, empleado.getCorreo());
             pstmt.setString(4, empleado.getContraseña());
+            pstmt.setDouble(5, empleado.getSueldo());
 
-            int filasInsertadas = pstmt.executeUpdate();
-            return filasInsertadas > 0;
+            return pstmt.executeUpdate() > 0;
+
         } catch (SQLException e)
         {
-            System.out.println("Error al insertar los empleados");
+            System.err.println("Error al insertar empleado: " + e.getMessage());
             return false;
         }
     }
 
     public boolean actualizarEmpleado(Empleado empleado)
     {
-        String sql = "UPDATE Empleado SET nombre = ?, apellido = ?, correo = ?, contrasena = ? WHERE id_empleado = ?";
+        String sql = "UPDATE empleado SET nombre = ?, apellido = ?, correo = ?, contrasena = ?, sueldo = ? WHERE id_empleado = ?";
 
         try (Connection conn = Conexion.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql))
         {
@@ -50,13 +52,13 @@ public class EmpleadoDAO
             pstmt.setString(2, empleado.getApellido());
             pstmt.setString(3, empleado.getCorreo());
             pstmt.setString(4, empleado.getContraseña());
-            pstmt.setInt(5, empleado.getId_empleado());
+            pstmt.setDouble(5, empleado.getSueldo());
+            pstmt.setInt(6, empleado.getId_empleado());
 
-            int filasActualizadas = pstmt.executeUpdate();
-            return filasActualizadas > 0;
+            return pstmt.executeUpdate() > 0;
         } catch (SQLException e)
         {
-            System.out.println("Error al modificar el empleado");
+            System.err.println("Error al actualizar empleado: " + e.getMessage());
             return false;
         }
     }
@@ -76,7 +78,8 @@ public class EmpleadoDAO
                         rs.getString("nombre"),
                         rs.getString("apellido"),
                         rs.getString("correo"),
-                        rs.getString("contrasena")
+                        rs.getString("contrasena"),
+                        rs.getDouble("sueldo")
                 );
 
                 listaEmpleados.add(empleado);
@@ -114,7 +117,7 @@ public class EmpleadoDAO
     public List<Empleado> obtenerTodosLosEmpleados()
     {
         List<Empleado> empleados = new ArrayList<>();
-        String sql = "SELECT id_empleado, nombre, apellido, correo FROM Empleado";
+        String sql = "SELECT id_empleado, nombre, apellido, correo, sueldo FROM Empleado";
 
         try (Connection conn = Conexion.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery())
         {
@@ -126,6 +129,7 @@ public class EmpleadoDAO
                 empleado.setNombre(rs.getString("nombre"));
                 empleado.setApellido(rs.getString("apellido"));
                 empleado.setCorreo(rs.getString("correo"));
+                empleado.setSueldo(rs.getDouble("sueldo"));
                 empleados.add(empleado);
             }
         } catch (SQLException e)
@@ -177,6 +181,29 @@ public class EmpleadoDAO
         return null;
     }
 
+    public static String obtenerNombrePorId2(int idEmpleado)
+    {
+        String sql = "SELECT nombre FROM empleado WHERE id_empleado = ?";
+
+        try (Connection conn = Conexion.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql))
+        {
+
+            pstmt.setInt(1, idEmpleado);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next())
+            {
+                return rs.getString("nombre");
+            }
+
+        } catch (SQLException e)
+        {
+            System.err.println("Error al obtener nombre del empleado: " + e.getMessage());
+        }
+
+        return "Desconocido";
+    }
+
     public int validarCredenciales(String correo, String contrasena)
     {
         String sql = "SELECT id_empleado FROM Empleado WHERE correo = ? AND contrasena = ?";
@@ -203,4 +230,3 @@ public class EmpleadoDAO
         }
     }
 }
-

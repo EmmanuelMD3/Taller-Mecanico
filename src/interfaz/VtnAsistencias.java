@@ -47,12 +47,14 @@ public class VtnAsistencias extends javax.swing.JInternalFrame
     private void initComponents()
     {
 
+        jPanel1 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaAsistencias = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        setPreferredSize(new java.awt.Dimension(1150, 520));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener()
         {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt)
@@ -80,6 +82,26 @@ public class VtnAsistencias extends javax.swing.JInternalFrame
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jButton4.setBackground(new java.awt.Color(51, 153, 255));
+        jButton4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
+        jButton4.setText("EXPORTAR DATOS");
+        jButton4.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 150, -1));
+
+        jLabel1.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
+        jLabel1.setText("ASISTENCIA");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 10, -1, 30));
+
         tablaAsistencias.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         tablaAsistencias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][]
@@ -104,24 +126,9 @@ public class VtnAsistencias extends javax.swing.JInternalFrame
         });
         jScrollPane1.setViewportView(tablaAsistencias);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 64, 1148, 430));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 64, 1148, 430));
 
-        jLabel1.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
-        jLabel1.setText("ASISTENCIA");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 10, -1, 30));
-
-        jButton4.setBackground(new java.awt.Color(51, 153, 255));
-        jButton4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setText("EXPORTAR DATOS");
-        jButton4.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 150, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1150, 500));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -209,6 +216,7 @@ public class VtnAsistencias extends javax.swing.JInternalFrame
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaAsistencias;
     // End of variables declaration//GEN-END:variables
